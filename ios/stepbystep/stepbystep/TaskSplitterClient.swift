@@ -12,7 +12,8 @@ enum APIEnvironment: CaseIterable {
         case .local:
             return "http://127.0.0.1:5001/stepbystep-tasks/us-central1"
         case .production:
-            return "https://us-central1-stepbystep-tasks.cloudfunctions.net"
+            // TODO: 本番URL設定時に更新
+            return ""
         }
     }
     
@@ -21,7 +22,7 @@ enum APIEnvironment: CaseIterable {
         case .local:
             return "Local Emulator"
         case .production:
-            return "Production Server"
+            return "Production Server (未設定)"
         }
     }
 }

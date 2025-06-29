@@ -17,6 +17,11 @@ class LiveTaskSplitterClient: TaskSplitterClient {
             throw TaskSplitterError.invalidTask
         }
         
+        // 本番環境が未設定の場合のチェック
+        if environment == .production && environment.baseURL.isEmpty {
+            throw TaskSplitterError.serverError("本番環境は現在利用できません。ローカル環境をご利用ください。")
+        }
+        
         // URL構築
         guard let url = URL(string: "\(environment.baseURL)/splitTask") else {
             throw TaskSplitterError.invalidURL
