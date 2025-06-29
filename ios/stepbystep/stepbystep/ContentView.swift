@@ -18,6 +18,8 @@ struct TaskInputReducer {
         var errorMessage: String?
         var steps: [String] = []
         var showSteps: Bool = false
+        var currentTask: PersistedTask?
+        var savedTasks: [PersistedTask] = []
         
         var isValid: Bool {
             taskTitle.count >= 5 && taskTitle.count <= 100
@@ -39,9 +41,18 @@ struct TaskInputReducer {
         case showError(String)
         case clearError
         case dismissSteps
+        
+        // 永続化関連のアクション
+        case onAppear
+        case tasksLoaded([PersistedTask])
+        case currentTaskLoaded(PersistedTask?)
+        case taskSaved(PersistedTask)
+        case taskDeleted(UUID)
+        case storageFailed(String)
     }
     
     @Dependency(\.taskSplitterClient) var taskSplitterClient
+    @Dependency(\.taskStorageClient) var taskStorageClient
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -49,6 +60,32 @@ struct TaskInputReducer {
             case let .taskTitleChanged(title):
                 state.taskTitle = title
                 state.errorMessage = nil
+                return .none
+                
+            case .onAppear:
+                return .run { send in
+                    do {
+                        let tasks = try await taskStorageClient.loadTasks()
+                        await send(.tasksLoaded(tasks))
+                        
+                        let currentTask = try await taskStorageClient.loadCurrentTask()
+                        await send(.currentTaskLoaded(currentTask))
+                    } catch {
+                        await send(.storageFailed("データの読み込みに失敗しました: \(error.localizedDescription)"))
+                    }
+                }
+                
+            case let .tasksLoaded(tasks):
+                state.savedTasks = tasks
+                return .none
+                
+            case let .currentTaskLoaded(task):
+                state.currentTask = task
+                if let task = task {
+                    // 進行中のタスクがある場合、ステップ実行画面に遷移
+                    state.steps = task.steps.map { $0.content }
+                    state.showSteps = true
+                }
                 return .none
                 
             case .saveButtonTapped:
@@ -78,8 +115,23 @@ struct TaskInputReducer {
                 state.isLoading = false
                 state.steps = steps
                 state.showSteps = true
+                
+                // タスクを永続化
+                let newTask = PersistedTask.createFromSteps(state.taskTitle, stepContents: steps)
+                state.currentTask = newTask
                 state.taskTitle = ""
-                return .none
+                
+                return .run { [task = newTask] send in
+                    do {
+                        try await taskStorageClient.saveCurrentTask(task)
+                        var tasks = try await taskStorageClient.loadTasks()
+                        tasks.append(task)
+                        try await taskStorageClient.saveTasks(tasks)
+                        await send(.taskSaved(task))
+                    } catch {
+                        await send(.storageFailed("タスクの保存に失敗しました: \(error.localizedDescription)"))
+                    }
+                }
                 
             case let .taskSplitFailed(errorMessage):
                 state.isLoading = false
@@ -98,6 +150,35 @@ struct TaskInputReducer {
             case .dismissSteps:
                 state.showSteps = false
                 state.steps = []
+                state.currentTask = nil
+                
+                // 現在のタスクをクリア
+                return .run { send in
+                    do {
+                        try await taskStorageClient.saveCurrentTask(nil)
+                    } catch {
+                        await send(.storageFailed("タスクのクリアに失敗しました"))
+                    }
+                }
+                
+            case let .taskSaved(task):
+                // タスクが保存されたときの追加処理（必要に応じて）
+                if !state.savedTasks.contains(where: { $0.id == task.id }) {
+                    state.savedTasks.append(task)
+                }
+                return .none
+                
+            case let .taskDeleted(taskId):
+                state.savedTasks.removeAll { $0.id == taskId }
+                if state.currentTask?.id == taskId {
+                    state.currentTask = nil
+                    state.showSteps = false
+                    state.steps = []
+                }
+                return .none
+                
+            case let .storageFailed(errorMessage):
+                state.errorMessage = errorMessage
                 return .none
             }
         }
@@ -108,7 +189,7 @@ struct TaskInputView: View {
     let store: StoreOf<TaskInputReducer>
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("タスク名")
@@ -160,66 +241,188 @@ struct TaskInputView: View {
             }
             .padding()
             .navigationTitle("新しいタスク")
-            .sheet(isPresented: Binding(
+            .onAppear {
+                store.send(.onAppear)
+            }
+            .navigationDestination(isPresented: Binding(
                 get: { store.showSteps },
-                set: { _ in store.send(.dismissSteps) }
+                set: { _ in }
             )) {
-                StepsDisplayView(steps: store.steps) {
+                StepExecutionView(steps: store.steps, onTaskCompleted: {
                     store.send(.dismissSteps)
-                }
+                })
             }
         }
     }
 }
 
-struct StepsDisplayView: View {
+// MARK: - Step Execution View (Task completion enforced)
+
+struct StepExecutionView: View {
     let steps: [String]
-    let onDismiss: () -> Void
+    let onTaskCompleted: () -> Void
+    
+    @State private var currentStepIndex: Int = 0
+    @State private var completedSteps: Set<Int> = []
+    @State private var showCompletionAlert = false
+    
+    private var allStepsCompleted: Bool {
+        completedSteps.count == steps.count
+    }
+    
+    private var currentStep: String? {
+        guard currentStepIndex < steps.count else { return nil }
+        return steps[currentStepIndex]
+    }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 16) {
-                Text("タスクが5つのステップに分割されました！")
+        VStack(spacing: 24) {
+            // Progress indicator
+            VStack(alignment: .leading, spacing: 8) {
+                Text("進捗: \(completedSteps.count)/\(steps.count)")
                     .font(.headline)
-                    .multilineTextAlignment(.center)
-                    .padding(.top)
+                    .foregroundColor(.secondary)
                 
-                List {
+                ProgressView(value: Double(completedSteps.count), total: Double(steps.count))
+                    .tint(.blue)
+            }
+            .padding(.horizontal)
+            
+            // Current step display
+            if let step = currentStep {
+                VStack(spacing: 16) {
+                    Text("ステップ \(currentStepIndex + 1)")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.blue)
+                    
+                    Text(step)
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(12)
+                    
+                    HStack(spacing: 16) {
+                        Button("完了") {
+                            completeCurrentStep()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(completedSteps.contains(currentStepIndex))
+                        
+                        if currentStepIndex > 0 {
+                            Button("前のステップ") {
+                                currentStepIndex = max(0, currentStepIndex - 1)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                        
+                        if currentStepIndex < steps.count - 1 && completedSteps.contains(currentStepIndex) {
+                            Button("次のステップ") {
+                                currentStepIndex = min(steps.count - 1, currentStepIndex + 1)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                .padding()
+            }
+            
+            // All steps overview
+            VStack(alignment: .leading, spacing: 12) {
+                Text("全ステップ一覧")
+                    .font(.headline)
+                    .padding(.horizontal)
+                
+                LazyVStack(spacing: 8) {
                     ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
                         HStack {
-                            Text("\(index + 1)")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(width: 24, height: 24)
-                                .background(Color.blue)
-                                .clipShape(Circle())
+                            // Step number circle
+                            ZStack {
+                                Circle()
+                                    .fill(stepColor(for: index))
+                                    .frame(width: 32, height: 32)
+                                
+                                if completedSteps.contains(index) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.white)
+                                        .fontWeight(.bold)
+                                } else {
+                                    Text("\(index + 1)")
+                                        .foregroundColor(.white)
+                                        .fontWeight(.semibold)
+                                }
+                            }
                             
                             Text(step)
                                 .font(.body)
-                                .multilineTextAlignment(.leading)
+                                .opacity(completedSteps.contains(index) ? 0.7 : 1.0)
+                                .strikethrough(completedSteps.contains(index))
                             
                             Spacer()
+                            
+                            if index == currentStepIndex {
+                                Text("現在")
+                                    .font(.caption)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.blue.opacity(0.2))
+                                    .cornerRadius(8)
+                            }
                         }
-                        .padding(.vertical, 4)
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                        .background(index == currentStepIndex ? Color.blue.opacity(0.05) : Color.clear)
+                        .cornerRadius(8)
+                        .onTapGesture {
+                            // Allow navigation to completed steps or current step
+                            if completedSteps.contains(index) || index == currentStepIndex {
+                                currentStepIndex = index
+                            }
+                        }
                     }
                 }
-                .listStyle(PlainListStyle())
-                
-                Button("完了") {
-                    onDismiss()
+            }
+            
+            Spacer()
+            
+            // Task completion button (only when all steps are done)
+            if allStepsCompleted {
+                Button("タスクを完了") {
+                    showCompletionAlert = true
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
                 .padding()
             }
-            .navigationTitle("分割されたステップ")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("閉じる") {
-                        onDismiss()
-                    }
-                }
+        }
+        .navigationTitle("ステップ実行")
+        .navigationBarBackButtonHidden(true) // 戻るボタンを非表示
+        .alert("タスク完了！", isPresented: $showCompletionAlert) {
+            Button("OK") {
+                onTaskCompleted()
             }
+        } message: {
+            Text("すべてのステップが完了しました。\nお疲れさまでした！")
+        }
+    }
+    
+    private func completeCurrentStep() {
+        completedSteps.insert(currentStepIndex)
+        
+        // Move to next uncompleted step
+        if let nextIndex = (currentStepIndex + 1..<steps.count).first(where: { !completedSteps.contains($0) }) {
+            currentStepIndex = nextIndex
+        }
+    }
+    
+    private func stepColor(for index: Int) -> Color {
+        if completedSteps.contains(index) {
+            return .green
+        } else if index == currentStepIndex {
+            return .blue
+        } else {
+            return .gray
         }
     }
 }
