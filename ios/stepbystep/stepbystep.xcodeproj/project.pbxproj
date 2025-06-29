@@ -6,6 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		61739A642E10E4170002A651 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61739A602E10E4170002A651 /* Assets.xcassets */; };
+		61739A652E10E4170002A651 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61739A612E10E4170002A651 /* ContentView.swift */; };
+		61739A662E10E4170002A651 /* stepbystepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61739A622E10E4170002A651 /* stepbystepApp.swift */; };
+		61739A692E10E41A0002A651 /* stepbystepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61739A672E10E41A0002A651 /* stepbystepTests.swift */; };
+		61739A6D2E10E41C0002A651 /* stepbystepUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61739A6A2E10E41C0002A651 /* stepbystepUITests.swift */; };
+		61739A6E2E10E41C0002A651 /* stepbystepUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61739A6B2E10E41C0002A651 /* stepbystepUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		61739A382E10D7B50002A651 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,25 +36,13 @@
 		61739A2A2E10D7B30002A651 /* stepbystep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = stepbystep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61739A372E10D7B50002A651 /* stepbystepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = stepbystepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61739A412E10D7B50002A651 /* stepbystepUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = stepbystepUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		61739A602E10E4170002A651 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		61739A612E10E4170002A651 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		61739A622E10E4170002A651 /* stepbystepApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stepbystepApp.swift; sourceTree = "<group>"; };
+		61739A672E10E41A0002A651 /* stepbystepTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stepbystepTests.swift; sourceTree = "<group>"; };
+		61739A6A2E10E41C0002A651 /* stepbystepUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stepbystepUITests.swift; sourceTree = "<group>"; };
+		61739A6B2E10E41C0002A651 /* stepbystepUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stepbystepUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		61739A2C2E10D7B30002A651 /* stepbystep */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = stepbystep;
-			sourceTree = "<group>";
-		};
-		61739A3A2E10D7B50002A651 /* stepbystepTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = stepbystepTests;
-			sourceTree = "<group>";
-		};
-		61739A442E10D7B50002A651 /* stepbystepUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = stepbystepUITests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		61739A272E10D7B30002A651 /* Frameworks */ = {
@@ -75,9 +72,9 @@
 		61739A212E10D7B30002A651 = {
 			isa = PBXGroup;
 			children = (
-				61739A2C2E10D7B30002A651 /* stepbystep */,
-				61739A3A2E10D7B50002A651 /* stepbystepTests */,
-				61739A442E10D7B50002A651 /* stepbystepUITests */,
+				61739A632E10E4170002A651 /* stepbystep */,
+				61739A682E10E41A0002A651 /* stepbystepTests */,
+				61739A6C2E10E41C0002A651 /* stepbystepUITests */,
 				61739A2B2E10D7B30002A651 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +87,33 @@
 				61739A412E10D7B50002A651 /* stepbystepUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		61739A632E10E4170002A651 /* stepbystep */ = {
+			isa = PBXGroup;
+			children = (
+				61739A602E10E4170002A651 /* Assets.xcassets */,
+				61739A612E10E4170002A651 /* ContentView.swift */,
+				61739A622E10E4170002A651 /* stepbystepApp.swift */,
+			);
+			path = stepbystep;
+			sourceTree = "<group>";
+		};
+		61739A682E10E41A0002A651 /* stepbystepTests */ = {
+			isa = PBXGroup;
+			children = (
+				61739A672E10E41A0002A651 /* stepbystepTests.swift */,
+			);
+			path = stepbystepTests;
+			sourceTree = "<group>";
+		};
+		61739A6C2E10E41C0002A651 /* stepbystepUITests */ = {
+			isa = PBXGroup;
+			children = (
+				61739A6A2E10E41C0002A651 /* stepbystepUITests.swift */,
+				61739A6B2E10E41C0002A651 /* stepbystepUITestsLaunchTests.swift */,
+			);
+			path = stepbystepUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -106,9 +130,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				61739A2C2E10D7B30002A651 /* stepbystep */,
 			);
 			name = stepbystep;
 			packageProductDependencies = (
@@ -130,9 +151,6 @@
 			dependencies = (
 				61739A392E10D7B50002A651 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				61739A3A2E10D7B50002A651 /* stepbystepTests */,
-			);
 			name = stepbystepTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +170,6 @@
 			);
 			dependencies = (
 				61739A432E10D7B50002A651 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				61739A442E10D7B50002A651 /* stepbystepUITests */,
 			);
 			name = stepbystepUITests;
 			packageProductDependencies = (
@@ -212,6 +227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61739A642E10E4170002A651 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +252,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61739A652E10E4170002A651 /* ContentView.swift in Sources */,
+				61739A662E10E4170002A651 /* stepbystepApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61739A692E10E41A0002A651 /* stepbystepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +269,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61739A6D2E10E41C0002A651 /* stepbystepUITests.swift in Sources */,
+				61739A6E2E10E41C0002A651 /* stepbystepUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
