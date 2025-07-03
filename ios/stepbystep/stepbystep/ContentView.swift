@@ -315,6 +315,10 @@ struct StepExecutionView: View {
     @State private var currentStepIndex: Int = 0
     @State private var completedSteps: Set<Int> = []
     @State private var showCompletionAlert = false
+    @State private var showCompletionAnimation = false
+    @State private var animateConfetti = false
+    @State private var animateSuccessIcon = false
+    @State private var animationScale: CGFloat = 0.1
     
     private var allStepsCompleted: Bool {
         completedSteps.count == steps.count
@@ -326,17 +330,18 @@ struct StepExecutionView: View {
     }
     
     var body: some View {
-        VStack(spacing: 24) {
-            // Progress indicator
-            VStack(alignment: .leading, spacing: 8) {
-                Text("進捗: \(completedSteps.count)/\(steps.count)")
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-                
-                ProgressView(value: Double(completedSteps.count), total: Double(steps.count))
-                    .tint(.blue)
-            }
-            .padding(.horizontal)
+        ZStack {
+            VStack(spacing: 24) {
+                // Progress indicator
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("進捗: \(completedSteps.count)/\(steps.count)")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                    
+                    ProgressView(value: Double(completedSteps.count), total: Double(steps.count))
+                        .tint(.blue)
+                }
+                .padding(.horizontal)
             
             // Current step display
             if let step = currentStep {
@@ -437,17 +442,28 @@ struct StepExecutionView: View {
             Spacer()
             
             // Task completion button (only when all steps are done)
-            if allStepsCompleted {
+            if allStepsCompleted && !showCompletionAnimation {
                 Button("タスクを完了") {
-                    showCompletionAlert = true
+                    startCompletionAnimation()
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .padding()
             }
+            }
+            .navigationTitle("ステップ実行")
+            .navigationBarBackButtonHidden(true) // 戻るボタンを非表示
+            
+            // Completion Animation Overlay
+            if showCompletionAnimation {
+                CompletionAnimationView(
+                    animateSuccessIcon: $animateSuccessIcon,
+                    animateConfetti: $animateConfetti,
+                    animationScale: $animationScale
+                )
+                .transition(.opacity)
+            }
         }
-        .navigationTitle("ステップ実行")
-        .navigationBarBackButtonHidden(true) // 戻るボタンを非表示
         .alert("タスク完了！", isPresented: $showCompletionAlert) {
             Button("OK") {
                 onTaskCompleted()
@@ -460,9 +476,42 @@ struct StepExecutionView: View {
     private func completeCurrentStep() {
         completedSteps.insert(currentStepIndex)
         
-        // Move to next uncompleted step
-        if let nextIndex = (currentStepIndex + 1..<steps.count).first(where: { !completedSteps.contains($0) }) {
-            currentStepIndex = nextIndex
+        // Check if all steps are completed
+        if allStepsCompleted {
+            // Start completion animation
+            startCompletionAnimation()
+        } else {
+            // Move to next uncompleted step
+            if let nextIndex = (currentStepIndex + 1..<steps.count).first(where: { !completedSteps.contains($0) }) {
+                currentStepIndex = nextIndex
+            }
+        }
+    }
+    
+    private func startCompletionAnimation() {
+        withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
+            showCompletionAnimation = true
+            animationScale = 1.2
+        }
+        
+        // Animate success icon
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                animateSuccessIcon = true
+                animationScale = 1.0
+            }
+        }
+        
+        // Show confetti effect
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            withAnimation(.easeInOut(duration: 1.0)) {
+                animateConfetti = true
+            }
+        }
+        
+        // Show completion alert after animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            showCompletionAlert = true
         }
     }
     
@@ -475,6 +524,118 @@ struct StepExecutionView: View {
             return .gray
         }
     }
+}
+
+// MARK: - Completion Animation View
+
+struct CompletionAnimationView: View {
+    @Binding var animateSuccessIcon: Bool
+    @Binding var animateConfetti: Bool
+    @Binding var animationScale: CGFloat
+    
+    var body: some View {
+        ZStack {
+            // Background overlay
+            Color.black.opacity(0.3)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 24) {
+                // Success Icon
+                ZStack {
+                    Circle()
+                        .fill(Color.green)
+                        .frame(width: 120, height: 120)
+                        .scaleEffect(animateSuccessIcon ? 1.0 : 0.5)
+                        .opacity(animateSuccessIcon ? 1.0 : 0.0)
+                    
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 60, weight: .bold))
+                        .foregroundColor(.white)
+                        .scaleEffect(animateSuccessIcon ? 1.0 : 0.1)
+                        .opacity(animateSuccessIcon ? 1.0 : 0.0)
+                }
+                .scaleEffect(animationScale)
+                
+                // Completion Text
+                VStack(spacing: 8) {
+                    Text("🎉 タスク完了！")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .scaleEffect(animateSuccessIcon ? 1.0 : 0.1)
+                        .opacity(animateSuccessIcon ? 1.0 : 0.0)
+                    
+                    Text("お疲れさまでした！")
+                        .font(.headline)
+                        .foregroundColor(.white.opacity(0.9))
+                        .scaleEffect(animateSuccessIcon ? 1.0 : 0.1)
+                        .opacity(animateSuccessIcon ? 1.0 : 0.0)
+                }
+            }
+            
+            // Confetti effect
+            if animateConfetti {
+                ConfettiView()
+            }
+        }
+    }
+}
+
+// MARK: - Confetti View
+
+struct ConfettiView: View {
+    @State private var confettiItems: [ConfettiItem] = []
+    
+    var body: some View {
+        ZStack {
+            ForEach(confettiItems, id: \.id) { item in
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(item.color)
+                    .frame(width: 8, height: 8)
+                    .position(item.position)
+                    .opacity(item.opacity)
+                    .rotationEffect(.degrees(item.rotation))
+            }
+        }
+        .onAppear {
+            generateConfetti()
+        }
+    }
+    
+    private func generateConfetti() {
+        let colors: [Color] = [.red, .blue, .green, .yellow, .orange, .purple, .pink]
+        
+        for i in 0..<50 {
+            let item = ConfettiItem(
+                id: i,
+                position: CGPoint(
+                    x: CGFloat.random(in: 50...350),
+                    y: -50
+                ),
+                color: colors.randomElement() ?? .blue,
+                opacity: 1.0,
+                rotation: Double.random(in: 0...360)
+            )
+            confettiItems.append(item)
+        }
+        
+        // Animate confetti falling
+        for i in 0..<confettiItems.count {
+            withAnimation(.easeIn(duration: Double.random(in: 2.0...4.0)).delay(Double(i) * 0.05)) {
+                confettiItems[i].position.y = 800
+                confettiItems[i].opacity = 0.0
+                confettiItems[i].rotation += 720
+            }
+        }
+    }
+}
+
+struct ConfettiItem {
+    let id: Int
+    var position: CGPoint
+    let color: Color
+    var opacity: Double
+    var rotation: Double
 }
 
 struct ContentView: View {
