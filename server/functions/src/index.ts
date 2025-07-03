@@ -1,11 +1,9 @@
-import {onRequest} from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+import * as functions from "firebase-functions";
 import {splitTaskIntoSteps} from "./taskSplitter";
 
-export const splitTask = onRequest(
-  {cors: true},
+export const splitTask = functions.https.onRequest(
   async (request, response) => {
-    logger.info("splitTask called", {structuredData: true});
+    console.log("splitTask called");
 
     try {
       // CORS headers
@@ -49,7 +47,7 @@ export const splitTask = onRequest(
         originalTask: task,
       });
     } catch (error) {
-      logger.error("Error in splitTask:", error);
+      console.error("Error in splitTask:", error);
       response.status(500).json({
         error: "Internal server error",
         message: error instanceof Error ? error.message : "Unknown error",

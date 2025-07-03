@@ -1,8 +1,13 @@
-import * as logger from "firebase-functions/logger";
+import * as functions from "firebase-functions";
 import {GoogleGenerativeAI} from "@google/generative-ai";
 
 // Gemini API設定
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const getGeminiApiKey = () => {
+  // 本番環境ではfunctions.config()、開発環境ではprocess.envを使用
+  return functions.config().gemini?.api_key || process.env.GEMINI_API_KEY || "";
+};
+
+const genAI = new GoogleGenerativeAI(getGeminiApiKey());
 
 /**
  * タスクを5つのステップに分割する（Gemini API実装）
@@ -10,7 +15,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
  * @return {Promise<string[]>} 5つのステップ配列
  */
 export async function splitTaskIntoSteps(task: string): Promise<string[]> {
-  logger.info(`Splitting task: ${task}`);
+  console.log(`Splitting task: ${task}`);
 
   // 基本的なバリデーション
   if (!task || task.trim().length === 0) {
@@ -25,9 +30,10 @@ export async function splitTaskIntoSteps(task: string): Promise<string[]> {
     throw new Error("タスクは100文字以内で入力してください");
   }
 
-  // 本番環境でAPIキーが設定されていない場合はMockモードにフォールバック
-  if (!process.env.GEMINI_API_KEY) {
-    logger.warn("GEMINI_API_KEY not set, using mock implementation");
+  // APIキーが設定されていない場合はMockモードにフォールバック
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) {
+    console.warn("GEMINI_API_KEY not set, using mock implementation");
     return splitTaskIntoStepsMock(task);
   }
 
@@ -60,12 +66,12 @@ export async function splitTaskIntoSteps(task: string): Promise<string[]> {
 完成と片付け
 `;
 
-    logger.info("Calling Gemini API with prompt");
+    console.log("Calling Gemini API with prompt");
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
 
-    logger.info("Gemini API response:", text);
+    console.log("Gemini API response:", text);
 
     // レスポンスを行ごとに分割してステップを抽出
     const steps = text.trim()
@@ -76,17 +82,17 @@ export async function splitTaskIntoSteps(task: string): Promise<string[]> {
 
     // 5つのステップが取得できない場合はエラー
     if (steps.length !== 5) {
-      logger.error("Gemini API returned incorrect number of steps:", steps);
+      console.error("Gemini API returned incorrect number of steps:", steps);
       throw new Error("AIからの応答が正しい形式ではありません");
     }
 
-    logger.info("Generated steps:", steps);
+    console.log("Generated steps:", steps);
     return steps;
   } catch (error) {
-    logger.error("Gemini API error:", error);
+    console.error("Gemini API error:", error);
 
     // API エラーの場合はMockモードにフォールバック
-    logger.warn("Falling back to mock implementation due to API error");
+    console.warn("Falling back to mock implementation due to API error");
     return splitTaskIntoStepsMock(task);
   }
 }
@@ -97,7 +103,7 @@ export async function splitTaskIntoSteps(task: string): Promise<string[]> {
  * @return {Promise<string[]>} 5つのステップ配列
  */
 async function splitTaskIntoStepsMock(task: string): Promise<string[]> {
-  logger.info("Using mock implementation for task splitting");
+  console.log("Using mock implementation for task splitting");
 
   // Mock データ生成
   const steps = [
@@ -111,7 +117,7 @@ async function splitTaskIntoStepsMock(task: string): Promise<string[]> {
   // 非同期処理をシミュレート
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  logger.info("Generated mock steps:", steps);
+  console.log("Generated mock steps:", steps);
   return steps;
 }
 
