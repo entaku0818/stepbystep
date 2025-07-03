@@ -60,3 +60,6 @@ xcodebuild clean -project ios/stepbystep/stepbystep.xcodeproj -scheme stepbystep
 - Originally planned for React Native but implemented in SwiftUI
 - Focus on extreme simplicity - avoid feature creep
 - Target users: People with ADHD or focus challenges
+
+## Memories
+- to memorize
