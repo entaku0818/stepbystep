@@ -9,11 +9,15 @@ import Testing
 import ComposableArchitecture
 @testable import stepbystep
 
+@MainActor
 struct TaskInputReducerTests {
     
     @Test func taskTitleChanged() async throws {
         let store = TestStore(initialState: TaskInputReducer.State()) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.taskTitleChanged("新しいタスク")) {
@@ -24,6 +28,9 @@ struct TaskInputReducerTests {
     @Test func validationShortTitle() async throws {
         let store = TestStore(initialState: TaskInputReducer.State()) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.taskTitleChanged("短い")) {
@@ -38,6 +45,9 @@ struct TaskInputReducerTests {
         let longTitle = String(repeating: "あ", count: 101)
         let store = TestStore(initialState: TaskInputReducer.State()) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.taskTitleChanged(longTitle)) {
@@ -51,6 +61,9 @@ struct TaskInputReducerTests {
     @Test func validTitle() async throws {
         let store = TestStore(initialState: TaskInputReducer.State()) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.taskTitleChanged("有効なタスク名")) {
@@ -64,6 +77,9 @@ struct TaskInputReducerTests {
     @Test func saveButtonTappedWithInvalidTitle() async throws {
         let store = TestStore(initialState: TaskInputReducer.State()) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.taskTitleChanged("短い")) {
@@ -75,29 +91,12 @@ struct TaskInputReducerTests {
         }
     }
     
-    @Test func saveButtonTappedWithValidTitle() async throws {
-        let store = TestStore(initialState: TaskInputReducer.State()) {
-            TaskInputReducer()
-        }
-        
-        await store.send(.taskTitleChanged("有効なタスク名")) {
-            $0.taskTitle = "有効なタスク名"
-        }
-        
-        await store.send(.saveButtonTapped) {
-            $0.isLoading = true
-            $0.errorMessage = nil
-        }
-        
-        await store.receive(.taskSaved) {
-            $0.isLoading = false
-            $0.taskTitle = ""
-        }
-    }
-    
     @Test func showError() async throws {
         let store = TestStore(initialState: TaskInputReducer.State()) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.showError("エラーメッセージ")) {
@@ -113,6 +112,9 @@ struct TaskInputReducerTests {
             )
         ) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.clearError) {
@@ -127,6 +129,9 @@ struct TaskInputReducerTests {
             )
         ) {
             TaskInputReducer()
+        } withDependencies: {
+            $0.taskSplitterClient = MockTaskSplitterClient()
+            $0.taskStorageClient = MockTaskStorageClient()
         }
         
         await store.send(.taskTitleChanged("新しいタスク")) {

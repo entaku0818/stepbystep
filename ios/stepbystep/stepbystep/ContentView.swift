@@ -20,6 +20,8 @@ struct TaskInputReducer {
         var showSteps: Bool = false
         var currentTask: PersistedTask?
         var savedTasks: [PersistedTask] = []
+        var showUsageLimitAlert: Bool = false
+        var remainingUsage: Int = 3
         
         var isValid: Bool {
             taskTitle.count >= 5 && taskTitle.count <= 100
@@ -49,6 +51,10 @@ struct TaskInputReducer {
         case taskSaved(PersistedTask)
         case taskDeleted(UUID)
         case storageFailed(String)
+        
+        // 使用制限関連のアクション
+        case updateRemainingUsage
+        case dismissUsageLimitAlert
     }
     
     @Dependency(\.taskSplitterClient) var taskSplitterClient
@@ -63,6 +69,9 @@ struct TaskInputReducer {
                 return .none
                 
             case .onAppear:
+                // 使用制限の残り回数を更新
+                state.remainingUsage = UsageLimitManager.shared.remainingUsage
+                
                 return .run { send in
                     do {
                         let tasks = try await taskStorageClient.loadTasks()
@@ -94,6 +103,12 @@ struct TaskInputReducer {
                     return .none
                 }
                 
+                // 使用制限チェック
+                if UsageLimitManager.shared.hasReachedLimit {
+                    state.showUsageLimitAlert = true
+                    return .none
+                }
+                
                 state.isLoading = true
                 state.errorMessage = nil
                 
@@ -115,6 +130,10 @@ struct TaskInputReducer {
                 state.isLoading = false
                 state.steps = steps
                 state.showSteps = true
+                
+                // 使用回数をインクリメント
+                UsageLimitManager.shared.incrementUsage()
+                state.remainingUsage = UsageLimitManager.shared.remainingUsage
                 
                 // タスクを永続化
                 let newTask = PersistedTask.createFromSteps(state.taskTitle, stepContents: steps)
@@ -180,6 +199,14 @@ struct TaskInputReducer {
             case let .storageFailed(errorMessage):
                 state.errorMessage = errorMessage
                 return .none
+                
+            case .updateRemainingUsage:
+                state.remainingUsage = UsageLimitManager.shared.remainingUsage
+                return .none
+                
+            case .dismissUsageLimitAlert:
+                state.showUsageLimitAlert = false
+                return .none
             }
         }
     }
@@ -192,9 +219,22 @@ struct TaskInputView: View {
         NavigationStack {
             VStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("タスク名")
-                        .font(.headline)
-                        .foregroundColor(.primary)
+                    HStack {
+                        Text("タスク名")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                        
+                        // 残り使用回数を表示
+                        Text("本日の残り: \(store.remainingUsage)回")
+                            .font(.caption)
+                            .foregroundColor(store.remainingUsage > 0 ? .blue : .red)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(8)
+                    }
                     
                     TextField("やりたいことを入力してください", text: Binding(
                         get: { store.taskTitle },
@@ -251,6 +291,16 @@ struct TaskInputView: View {
                 StepExecutionView(steps: store.steps, onTaskCompleted: {
                     store.send(.dismissSteps)
                 })
+            }
+            .alert("使用制限に達しました", isPresented: Binding(
+                get: { store.showUsageLimitAlert },
+                set: { _ in store.send(.dismissUsageLimitAlert) }
+            )) {
+                Button("OK") {
+                    store.send(.dismissUsageLimitAlert)
+                }
+            } message: {
+                Text(UsageLimitManager.shared.getLimitMessage())
             }
         }
     }
