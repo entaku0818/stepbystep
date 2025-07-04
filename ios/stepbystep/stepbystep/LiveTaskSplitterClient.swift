@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Live Implementation
 
 class LiveTaskSplitterClient: TaskSplitterClient {
-    var environment: APIEnvironment = .local // デフォルトはローカル環境
+    var environment: APIEnvironment = .production // デフォルトは本番環境
     
     private let session: URLSession
     
@@ -17,10 +17,7 @@ class LiveTaskSplitterClient: TaskSplitterClient {
             throw TaskSplitterError.invalidTask
         }
         
-        // 本番環境が未設定の場合のチェック
-        if environment == .production && environment.baseURL.isEmpty {
-            throw TaskSplitterError.serverError("本番環境は現在利用できません。ローカル環境をご利用ください。")
-        }
+        // 本番環境設定済み
         
         // URL構築
         guard let url = URL(string: "\(environment.baseURL)/splitTask") else {
@@ -88,6 +85,7 @@ class LiveTaskSplitterClient: TaskSplitterClient {
 
 extension LiveTaskSplitterClient {
     /// 環境を切り替える便利メソッド
+    /// デバッグ時：本番環境がデフォルト
     func switchToLocal() {
         environment = .local
     }
