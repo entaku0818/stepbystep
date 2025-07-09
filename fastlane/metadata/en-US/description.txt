@@ -1,0 +1,20 @@
+StepByStep is a task management app that automatically breaks down tasks into 5 actionable steps using AI, enforcing single-task focus to help you stay concentrated and productive.
+
+Core Features:
+
+AI-powered task splitting (powered by Gemini API)
+Single-task enforcement: only one active task at a time
+Sequential execution: no skipping steps or multitasking
+Minimal UI showing only current step for focus
+Progress tracking with completion animations
+Daily usage limits (3 AI splits per day for free version)
+
+Key Benefits:
+
+Simple text input with automatic AI breakdown
+One task registration at a time
+No way back until task completion
+Minimal design supporting concentration
+Perfect for ADHD or focus-challenged individuals
+
+StepByStep helps you accomplish tasks through forced sequential execution and extreme simplicity. Experience focused, distraction-free productivity.
