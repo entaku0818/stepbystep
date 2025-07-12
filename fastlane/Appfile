@@ -1,4 +1,4 @@
-app_identifier("com.entaku.stepbystep") # The bundle identifier of your app
+app_identifier("com.entaku.stepTask") # The bundle identifier of your app
 apple_id("entaku19890818@gmail.com") # Your Apple Developer Portal username
 team_id("4YZQY4C47E") # Developer Portal Team ID
 

@@ -29,25 +29,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		61739A2A2E10D7B30002A651 /* stepbystep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = stepbystep.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		61739A372E10D7B50002A651 /* stepbystepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = stepbystepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		61739A412E10D7B50002A651 /* stepbystepUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = stepbystepUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		61739A2A2E10D7B30002A651 /* TaskSteps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskSteps.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61739A372E10D7B50002A651 /* TaskStepsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskStepsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskStepsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		61739B272E10EB8A0002A651 /* stepbystep */ = {
+		61739B272E10EB8A0002A651 /* stepTask */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = stepbystep;
+			path = stepTask;
 			sourceTree = "<group>";
 		};
-		61739B2C2E10EB8E0002A651 /* stepbystepTests */ = {
+		61739B2C2E10EB8E0002A651 /* stepTaskTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = stepbystepTests;
+			path = stepTaskTests;
 			sourceTree = "<group>";
 		};
-		61739B302E10EB920002A651 /* stepbystepUITests */ = {
+		61739B302E10EB920002A651 /* stepTaskUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = stepbystepUITests;
+			path = stepTaskUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -82,9 +82,9 @@
 		61739A212E10D7B30002A651 = {
 			isa = PBXGroup;
 			children = (
-				61739B272E10EB8A0002A651 /* stepbystep */,
-				61739B2C2E10EB8E0002A651 /* stepbystepTests */,
-				61739B302E10EB920002A651 /* stepbystepUITests */,
+				61739B272E10EB8A0002A651 /* stepTask */,
+				61739B2C2E10EB8E0002A651 /* stepTaskTests */,
+				61739B302E10EB920002A651 /* stepTaskUITests */,
 				61739A2B2E10D7B30002A651 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,9 +92,9 @@
 		61739A2B2E10D7B30002A651 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61739A2A2E10D7B30002A651 /* stepbystep.app */,
-				61739A372E10D7B50002A651 /* stepbystepTests.xctest */,
-				61739A412E10D7B50002A651 /* stepbystepUITests.xctest */,
+				61739A2A2E10D7B30002A651 /* TaskSteps.app */,
+				61739A372E10D7B50002A651 /* TaskStepsTests.xctest */,
+				61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,9 +102,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		61739A292E10D7B30002A651 /* stepbystep */ = {
+		61739A292E10D7B30002A651 /* TaskSteps */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61739A4B2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "stepbystep" */;
+			buildConfigurationList = 61739A4B2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskSteps" */;
 			buildPhases = (
 				61739A262E10D7B30002A651 /* Sources */,
 				61739A272E10D7B30002A651 /* Frameworks */,
@@ -115,20 +115,20 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				61739B272E10EB8A0002A651 /* stepbystep */,
+				61739B272E10EB8A0002A651 /* stepTask */,
 			);
-			name = stepbystep;
+			name = TaskSteps;
 			packageProductDependencies = (
 				61739BB82E10F4790002A651 /* ComposableArchitecture */,
 				61739BBB2E10F5BB0002A651 /* FirebaseAnalytics */,
 			);
 			productName = stepbystep;
-			productReference = 61739A2A2E10D7B30002A651 /* stepbystep.app */;
+			productReference = 61739A2A2E10D7B30002A651 /* TaskSteps.app */;
 			productType = "com.apple.product-type.application";
 		};
-		61739A362E10D7B50002A651 /* stepbystepTests */ = {
+		61739A362E10D7B50002A651 /* TaskStepsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61739A4E2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "stepbystepTests" */;
+			buildConfigurationList = 61739A4E2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskStepsTests" */;
 			buildPhases = (
 				61739A332E10D7B50002A651 /* Sources */,
 				61739A342E10D7B50002A651 /* Frameworks */,
@@ -140,18 +140,18 @@
 				61739A392E10D7B50002A651 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				61739B2C2E10EB8E0002A651 /* stepbystepTests */,
+				61739B2C2E10EB8E0002A651 /* stepTaskTests */,
 			);
-			name = stepbystepTests;
+			name = TaskStepsTests;
 			packageProductDependencies = (
 			);
 			productName = stepbystepTests;
-			productReference = 61739A372E10D7B50002A651 /* stepbystepTests.xctest */;
+			productReference = 61739A372E10D7B50002A651 /* TaskStepsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		61739A402E10D7B50002A651 /* stepbystepUITests */ = {
+		61739A402E10D7B50002A651 /* TaskStepsUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61739A512E10D7B50002A651 /* Build configuration list for PBXNativeTarget "stepbystepUITests" */;
+			buildConfigurationList = 61739A512E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskStepsUITests" */;
 			buildPhases = (
 				61739A3D2E10D7B50002A651 /* Sources */,
 				61739A3E2E10D7B50002A651 /* Frameworks */,
@@ -163,13 +163,13 @@
 				61739A432E10D7B50002A651 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				61739B302E10EB920002A651 /* stepbystepUITests */,
+				61739B302E10EB920002A651 /* stepTaskUITests */,
 			);
-			name = stepbystepUITests;
+			name = TaskStepsUITests;
 			packageProductDependencies = (
 			);
 			productName = stepbystepUITests;
-			productReference = 61739A412E10D7B50002A651 /* stepbystepUITests.xctest */;
+			productReference = 61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -195,7 +195,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61739A252E10D7B30002A651 /* Build configuration list for PBXProject "stepbystep" */;
+			buildConfigurationList = 61739A252E10D7B30002A651 /* Build configuration list for PBXProject "TaskSteps" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -213,9 +213,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				61739A292E10D7B30002A651 /* stepbystep */,
-				61739A362E10D7B50002A651 /* stepbystepTests */,
-				61739A402E10D7B50002A651 /* stepbystepUITests */,
+				61739A292E10D7B30002A651 /* TaskSteps */,
+				61739A362E10D7B50002A651 /* TaskStepsTests */,
+				61739A402E10D7B50002A651 /* TaskStepsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -271,12 +271,12 @@
 /* Begin PBXTargetDependency section */
 		61739A392E10D7B50002A651 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 61739A292E10D7B30002A651 /* stepbystep */;
+			target = 61739A292E10D7B30002A651 /* TaskSteps */;
 			targetProxy = 61739A382E10D7B50002A651 /* PBXContainerItemProxy */;
 		};
 		61739A432E10D7B50002A651 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 61739A292E10D7B30002A651 /* stepbystep */;
+			target = 61739A292E10D7B30002A651 /* TaskSteps */;
 			targetProxy = 61739A422E10D7B50002A651 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -413,6 +413,7 @@
 				DEVELOPMENT_TEAM = 4YZQY4C47E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Task Steps";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -424,8 +425,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.stepbystep;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.stepTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -443,6 +444,7 @@
 				DEVELOPMENT_TEAM = 4YZQY4C47E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Task Steps";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -454,8 +456,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.stepbystep;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.stepTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -478,7 +480,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/stepbystep.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/stepbystep";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskSteps.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TaskSteps";
 			};
 			name = Debug;
 		};
@@ -497,7 +499,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/stepbystep.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/stepbystep";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskSteps.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TaskSteps";
 			};
 			name = Release;
 		};
@@ -538,7 +540,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61739A252E10D7B30002A651 /* Build configuration list for PBXProject "stepbystep" */ = {
+		61739A252E10D7B30002A651 /* Build configuration list for PBXProject "TaskSteps" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61739A492E10D7B50002A651 /* Debug */,
@@ -547,7 +549,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61739A4B2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "stepbystep" */ = {
+		61739A4B2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskSteps" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61739A4C2E10D7B50002A651 /* Debug */,
@@ -556,7 +558,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61739A4E2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "stepbystepTests" */ = {
+		61739A4E2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskStepsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61739A4F2E10D7B50002A651 /* Debug */,
@@ -565,7 +567,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61739A512E10D7B50002A651 /* Build configuration list for PBXNativeTarget "stepbystepUITests" */ = {
+		61739A512E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskStepsUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61739A522E10D7B50002A651 /* Debug */,

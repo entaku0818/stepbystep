@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "61739A292E10D7B30002A651"
-               BuildableName = "stepbystep.app"
-               BlueprintName = "stepbystep"
-               ReferencedContainer = "container:stepbystep.xcodeproj">
+               BuildableName = "TaskSteps.app"
+               BlueprintName = "TaskSteps"
+               ReferencedContainer = "container:TaskSteps.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,9 +36,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "61739A362E10D7B50002A651"
-               BuildableName = "stepbystepTests.xctest"
-               BlueprintName = "stepbystepTests"
-               ReferencedContainer = "container:stepbystep.xcodeproj">
+               BuildableName = "TaskStepsTests.xctest"
+               BlueprintName = "TaskStepsTests"
+               ReferencedContainer = "container:TaskSteps.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "61739A402E10D7B50002A651"
-               BuildableName = "stepbystepUITests.xctest"
-               BlueprintName = "stepbystepUITests"
-               ReferencedContainer = "container:stepbystep.xcodeproj">
+               BuildableName = "TaskStepsUITests.xctest"
+               BlueprintName = "TaskStepsUITests"
+               ReferencedContainer = "container:TaskSteps.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,9 +69,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "61739A292E10D7B30002A651"
-            BuildableName = "stepbystep.app"
-            BlueprintName = "stepbystep"
-            ReferencedContainer = "container:stepbystep.xcodeproj">
+            BuildableName = "TaskSteps.app"
+            BlueprintName = "TaskSteps"
+            ReferencedContainer = "container:TaskSteps.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "61739A292E10D7B30002A651"
-            BuildableName = "stepbystep.app"
-            BlueprintName = "stepbystep"
-            ReferencedContainer = "container:stepbystep.xcodeproj">
+            BuildableName = "TaskSteps.app"
+            BlueprintName = "TaskSteps"
+            ReferencedContainer = "container:TaskSteps.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
