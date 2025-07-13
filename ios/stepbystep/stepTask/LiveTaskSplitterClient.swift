@@ -84,16 +84,6 @@ class LiveTaskSplitterClient: TaskSplitterClient {
 // MARK: - Environment Switching Helper
 
 extension LiveTaskSplitterClient {
-    /// 環境を切り替える便利メソッド
-    /// デバッグ時：本番環境がデフォルト
-    func switchToLocal() {
-        environment = .local
-    }
-    
-    func switchToProduction() {
-        environment = .production
-    }
-    
     /// 現在の環境情報を取得
     var currentEnvironmentInfo: String {
         return "\(environment.description): \(environment.baseURL)"

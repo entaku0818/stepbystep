@@ -4,13 +4,10 @@ import Dependencies
 // MARK: - API Environment
 
 enum APIEnvironment: CaseIterable {
-    case local      // Firebase Emulator (開発用)
     case production // Firebase Functions (本番用)
     
     var baseURL: String {
         switch self {
-        case .local:
-            return "http://127.0.0.1:5001/stepbystep-tasks/us-central1"
         case .production:
             return "https://us-central1-stepbystep-tasks.cloudfunctions.net"
         }
@@ -18,8 +15,6 @@ enum APIEnvironment: CaseIterable {
     
     var description: String {
         switch self {
-        case .local:
-            return "Local Emulator"
         case .production:
             return "Production Server"
         }
