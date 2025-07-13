@@ -10,7 +10,7 @@ class AdMobManager: NSObject, ObservableObject {
     @Published var isAdLoaded = false
     @Published var isShowingAd = false
     
-    private var rewardedAd: GADRewardedAd?
+    private var rewardedAd: RewardedAd?
     private var isAdLoading = false
     
     // テスト用広告ユニットID（本番時は実際のIDに変更）
@@ -23,7 +23,7 @@ class AdMobManager: NSObject, ObservableObject {
     
     private func configureAdMob() {
         // AdMobの初期化
-        GADMobileAds.sharedInstance().start { _ in
+        MobileAds.shared.start { _ in
             print("AdMob initialized")
         }
         
@@ -37,9 +37,9 @@ class AdMobManager: NSObject, ObservableObject {
         
         isAdLoading = true
         
-        let request = GADRequest()
+        let request = Request()
         
-        GADRewardedAd.load(withAdUnitID: rewardedAdUnitID, request: request) { [weak self] ad, error in
+        RewardedAd.load(with: rewardedAdUnitID, request: request) { [weak self] ad, error in
             DispatchQueue.main.async {
                 self?.isAdLoading = false
                 
@@ -76,7 +76,7 @@ class AdMobManager: NSObject, ObservableObject {
         
         isShowingAd = true
         
-        rewardedAd.present(fromRootViewController: rootViewController) { [weak self] in
+        rewardedAd.present(from: rootViewController) { [weak self] in
             print("User earned reward")
             completion(true)
             
@@ -93,27 +93,27 @@ class AdMobManager: NSObject, ObservableObject {
 
 // MARK: - GADFullScreenContentDelegate
 
-extension AdMobManager: GADFullScreenContentDelegate {
-    func adDidRecordImpression(_ ad: GADFullScreenPresentingAd) {
+extension AdMobManager: FullScreenContentDelegate {
+    func adDidRecordImpression(_ ad: FullScreenPresentingAd) {
         print("Ad recorded an impression")
     }
     
-    func adDidRecordClick(_ ad: GADFullScreenPresentingAd) {
+    func adDidRecordClick(_ ad: FullScreenPresentingAd) {
         print("Ad recorded a click")
     }
     
-    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+    func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("Ad failed to present: \(error.localizedDescription)")
         isShowingAd = false
         loadRewardedAd() // 失敗した場合は新しい広告を読み込み
     }
     
-    func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+    func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
         print("Ad will present")
         isShowingAd = true
     }
     
-    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+    func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         print("Ad dismissed")
         isShowingAd = false
         rewardedAd = nil
