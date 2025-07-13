@@ -9,4 +9,9 @@
 # Xcode マクロフィンガープリント検証をスキップ
 defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 
+# Swift マクロを有効化
+defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidaton -bool YES
+
 echo "Post clone setup completed for Task Steps"
+echo "Macro fingerprint validation disabled"
+
