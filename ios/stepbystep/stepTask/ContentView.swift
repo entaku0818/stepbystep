@@ -236,12 +236,29 @@ struct TaskInputView: View {
                             .cornerRadius(8)
                     }
                     
-                    TextField("やりたいことを入力してください", text: Binding(
+                    TextEditor(text: Binding(
                         get: { store.taskTitle },
                         set: { store.send(.taskTitleChanged($0)) }
                     ))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(minHeight: 60, maxHeight: 120)
+                        .padding(4)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
                         .disabled(store.isLoading)
+                        .overlay(
+                            // プレースホルダー
+                            Group {
+                                if store.taskTitle.isEmpty {
+                                    Text("やりたいことを入力してください")
+                                        .foregroundColor(Color.gray.opacity(0.5))
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 12)
+                                        .allowsHitTesting(false)
+                                }
+                            }, alignment: .topLeading
+                        )
                     
                     if let validationMessage = store.validationMessage {
                         Text(validationMessage)
