@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Mock Implementation
 
 class MockTaskSplitterClient: TaskSplitterClient {
-    var environment: APIEnvironment = .local
+    var environment: APIEnvironment = .production
     
     // テスト用の設定
     var shouldSucceed: Bool = true
@@ -81,6 +81,6 @@ extension MockTaskSplitterClient {
         mockDelay = 0.5
         customSteps = nil
         customError = nil
-        environment = .local
+        environment = .production
     }
 }
