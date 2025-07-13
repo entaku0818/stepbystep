@@ -20,6 +20,10 @@ struct PersistedTask: Codable, Equatable, Identifiable {
         steps.allSatisfy { $0.isCompleted }
     }
     
+    var completedStepCount: Int {
+        steps.filter { $0.isCompleted }.count
+    }
+    
     init(id: UUID = UUID(), title: String, steps: [TaskStep], createdAt: Date = Date()) {
         self.id = id
         self.title = title

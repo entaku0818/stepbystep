@@ -7,8 +7,8 @@ import ComposableArchitecture
 struct TaskHistoryReducer {
     @ObservableState
     struct State: Equatable {
-        var savedTasks: [SavedTask] = []
-        var selectedTask: SavedTask?
+        var savedTasks: [PersistedTask] = []
+        var selectedTask: PersistedTask?
         var showTaskDetail = false
         var isLoading = false
         var errorMessage: String?
@@ -16,12 +16,12 @@ struct TaskHistoryReducer {
     
     enum Action {
         case loadTasks
-        case tasksLoaded([SavedTask])
-        case selectTask(SavedTask)
+        case tasksLoaded([PersistedTask])
+        case selectTask(PersistedTask)
         case deselectTask
-        case deleteTask(SavedTask)
-        case taskDeleted(taskId: String)
-        case resumeTask(SavedTask)
+        case deleteTask(PersistedTask)
+        case taskDeleted(taskId: UUID)
+        case resumeTask(PersistedTask)
         case loadFailed(String)
         case clearError
     }
@@ -37,7 +37,7 @@ struct TaskHistoryReducer {
                 
                 return .run { send in
                     do {
-                        let tasks = try await taskStorageClient.getAllTasks()
+                        let tasks = try await taskStorageClient.loadTasks()
                         await send(.tasksLoaded(tasks))
                     } catch {
                         await send(.loadFailed("タスクの読み込みに失敗しました"))
@@ -62,7 +62,7 @@ struct TaskHistoryReducer {
             case let .deleteTask(task):
                 return .run { send in
                     do {
-                        try await taskStorageClient.deleteTask(task.id)
+                        try await taskStorageClient.deleteTask(id: task.id)
                         await send(.taskDeleted(taskId: task.id))
                     } catch {
                         await send(.loadFailed("タスクの削除に失敗しました"))
@@ -185,7 +185,7 @@ struct TaskListView: View {
 // MARK: - Task Row View
 
 struct TaskRowView: View {
-    let task: SavedTask
+    let task: PersistedTask
     let onTap: () -> Void
     
     var body: some View {
@@ -236,7 +236,7 @@ struct TaskRowView: View {
 // MARK: - Status Badge
 
 struct StatusBadge: View {
-    let task: SavedTask
+    let task: PersistedTask
     
     var body: some View {
         HStack(spacing: 4) {
@@ -326,7 +326,7 @@ struct ProgressBar: View {
 // MARK: - Task Detail View
 
 struct TaskDetailView: View {
-    let task: SavedTask
+    let task: PersistedTask
     let store: StoreOf<TaskHistoryReducer>
     
     var body: some View {
@@ -379,7 +379,7 @@ struct TaskDetailView: View {
                                     .font(.title3)
                                 
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(step.title)
+                                    Text(step.content)
                                         .strikethrough(step.isCompleted)
                                         .foregroundColor(step.isCompleted ? .secondary : .primary)
                                     
