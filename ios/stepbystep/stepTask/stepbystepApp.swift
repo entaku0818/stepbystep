@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct stepbystepApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView(
+                store: Store(initialState: MainTabReducer.State()) {
+                    MainTabReducer()
+                }
+            )
         }
     }
 }
