@@ -22,6 +22,8 @@ struct TaskInputReducer {
         var savedTasks: [PersistedTask] = []
         var showUsageLimitAlert: Bool = false
         var remainingUsage: Int = 3
+        var isShowingAd: Bool = false
+        var adLoadingMessage: String?
         
         var isValid: Bool {
             taskTitle.count >= 5 && taskTitle.count <= 100
@@ -55,10 +57,17 @@ struct TaskInputReducer {
         // 使用制限関連のアクション
         case updateRemainingUsage
         case dismissUsageLimitAlert
+        
+        // 広告関連のアクション
+        case showAdBeforeTaskSplit
+        case adShown(Bool)
+        case adLoadingStarted
+        case adLoadingCompleted
     }
     
     @Dependency(\.taskSplitterClient) var taskSplitterClient
     @Dependency(\.taskStorageClient) var taskStorageClient
+    @Dependency(\.adClient) var adClient
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -79,6 +88,9 @@ struct TaskInputReducer {
                         
                         let currentTask = try await taskStorageClient.loadCurrentTask()
                         await send(.currentTaskLoaded(currentTask))
+                        
+                        // 広告をプリロード
+                        await adClient.loadAd()
                     } catch {
                         await send(.storageFailed("データの読み込みに失敗しました: \(error.localizedDescription)"))
                     }
@@ -109,9 +121,41 @@ struct TaskInputReducer {
                     return .none
                 }
                 
+                // 広告を表示してからタスク分割を行う
+                return .send(.showAdBeforeTaskSplit)
+                
+            case .showAdBeforeTaskSplit:
                 state.isLoading = true
+                state.adLoadingMessage = "広告を読み込み中..."
                 state.errorMessage = nil
                 
+                return .run { send in
+                    await send(.adLoadingStarted)
+                    
+                    // 広告が利用可能かチェック
+                    let isAdAvailable = await adClient.isAdAvailable
+                    
+                    if isAdAvailable {
+                        // 広告を表示
+                        let adResult = await adClient.showAd()
+                        await send(.adShown(adResult))
+                    } else {
+                        // 広告が利用できない場合は直接タスク分割を実行
+                        await send(.adShown(false))
+                    }
+                }
+                
+            case .adLoadingStarted:
+                return .none
+                
+            case .adLoadingCompleted:
+                state.adLoadingMessage = nil
+                return .none
+                
+            case let .adShown(success):
+                state.adLoadingMessage = nil
+                
+                // 広告表示の成否に関わらず、タスク分割を実行
                 return .run { [task = state.taskTitle] send in
                     do {
                         let steps = try await taskSplitterClient.splitTask(task)
@@ -215,6 +259,16 @@ struct TaskInputReducer {
 struct TaskInputView: View {
     let store: StoreOf<TaskInputReducer>
     
+    private func loadingText(store: StoreOf<TaskInputReducer>) -> String {
+        if let adMessage = store.adLoadingMessage {
+            return adMessage
+        } else if store.isLoading {
+            return "AI分割中..."
+        } else {
+            return "タスクを分割"
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
@@ -275,7 +329,7 @@ struct TaskInputView: View {
                             ProgressView()
                                 .scaleEffect(0.8)
                         }
-                        Text(store.isLoading ? "AI分割中..." : "タスクを分割")
+                        Text(loadingText(store: store))
                     }
                     .frame(maxWidth: .infinity)
                     .padding()

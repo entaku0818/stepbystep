@@ -12,6 +12,8 @@ REQUIRED_VARS=(
     # "FIREBASE_PROJECT_ID"     # FirebaseプロジェクトID（未使用）
     # "ANALYTICS_KEY"           # アナリティクスキー（未使用）
     # "CRASH_REPORTING_KEY"     # クラッシュレポートキー（未使用）
+    # "ADMOB_APP_ID"            # AdMobアプリID（未使用）
+    # "ADMOB_REWARDED_AD_ID"    # AdMobリワード広告ID（未使用）
 )
 
 # 環境変数のチェック（現在はコメントアウト）
