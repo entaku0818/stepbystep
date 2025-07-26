@@ -10,17 +10,20 @@ struct MainTabReducer {
         var selectedTab: Tab = .tasks
         var taskInputState = TaskInputReducer.State()
         var taskHistoryState = TaskHistoryReducer.State()
+        var settingsState = SettingsReducer.State()
     }
     
     enum Action {
         case tabSelected(Tab)
         case taskInput(TaskInputReducer.Action)
         case taskHistory(TaskHistoryReducer.Action)
+        case settings(SettingsReducer.Action)
     }
     
     enum Tab: String, CaseIterable {
         case tasks = "タスク"
         case history = "履歴"
+        case settings = "設定"
         
         var systemImage: String {
             switch self {
@@ -28,6 +31,8 @@ struct MainTabReducer {
                 return "plus.circle"
             case .history:
                 return "clock"
+            case .settings:
+                return "gearshape"
             }
         }
     }
@@ -39,6 +44,10 @@ struct MainTabReducer {
         
         Scope(state: \.taskHistoryState, action: \.taskHistory) {
             TaskHistoryReducer()
+        }
+        
+        Scope(state: \.settingsState, action: \.settings) {
+            SettingsReducer()
         }
         
         Reduce { state, action in
@@ -64,6 +73,9 @@ struct MainTabReducer {
                 return .none
                 
             case .taskHistory:
+                return .none
+                
+            case .settings:
                 return .none
             }
         }
@@ -105,6 +117,19 @@ struct MainTabView: View {
                       systemImage: MainTabReducer.Tab.history.systemImage)
             }
             .tag(MainTabReducer.Tab.history)
+            
+            // 設定タブ
+            SettingsView(
+                store: store.scope(
+                    state: \.settingsState,
+                    action: \.settings
+                )
+            )
+            .tabItem {
+                Label(MainTabReducer.Tab.settings.rawValue,
+                      systemImage: MainTabReducer.Tab.settings.systemImage)
+            }
+            .tag(MainTabReducer.Tab.settings)
         }
     }
 }
