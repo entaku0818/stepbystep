@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61701A5D2E350B63004A411A /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 61701A5C2E350B63004A411A /* RevenueCat */; };
 		61739BB92E10F4790002A651 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 61739BB82E10F4790002A651 /* ComposableArchitecture */; };
 		61739BBC2E10F5BB0002A651 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 61739BBB2E10F5BB0002A651 /* FirebaseAnalytics */; };
 		618E59D62E24008C00219804 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 618E59D52E24008C00219804 /* GoogleMobileAds */; };
@@ -58,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61701A5D2E350B63004A411A /* RevenueCat in Frameworks */,
 				618E59D62E24008C00219804 /* GoogleMobileAds in Frameworks */,
 				61739BBC2E10F5BB0002A651 /* FirebaseAnalytics in Frameworks */,
 				61739BB92E10F4790002A651 /* ComposableArchitecture in Frameworks */,
@@ -124,6 +126,7 @@
 				61739BB82E10F4790002A651 /* ComposableArchitecture */,
 				61739BBB2E10F5BB0002A651 /* FirebaseAnalytics */,
 				618E59D52E24008C00219804 /* GoogleMobileAds */,
+				61701A5C2E350B63004A411A /* RevenueCat */,
 			);
 			productName = stepbystep;
 			productReference = 61739A2A2E10D7B30002A651 /* TaskSteps.app */;
@@ -211,6 +214,7 @@
 				61739BB72E10F4790002A651 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				61739BBA2E10F5BB0002A651 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				618E59D42E24008C00219804 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				61701A5B2E350B63004A411A /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 61739A2B2E10D7B30002A651 /* Products */;
@@ -288,6 +292,8 @@
 /* Begin XCBuildConfiguration section */
 		61739A492E10D7B50002A651 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 61739B272E10EB8A0002A651 /* stepTask */;
+			baseConfigurationReferenceRelativePath = Config/Debug.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -352,6 +358,8 @@
 		};
 		61739A4A2E10D7B50002A651 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 61739B272E10EB8A0002A651 /* stepTask */;
+			baseConfigurationReferenceRelativePath = Config/Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -409,6 +417,8 @@
 		};
 		61739A4C2E10D7B50002A651 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 61739B272E10EB8A0002A651 /* stepTask */;
+			baseConfigurationReferenceRelativePath = Config/Debug.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -443,6 +453,8 @@
 		};
 		61739A4D2E10D7B50002A651 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 61739B272E10EB8A0002A651 /* stepTask */;
+			baseConfigurationReferenceRelativePath = Config/Release.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -477,6 +489,8 @@
 		};
 		61739A4F2E10D7B50002A651 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 61739B272E10EB8A0002A651 /* stepTask */;
+			baseConfigurationReferenceRelativePath = Config/Debug.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -496,6 +510,8 @@
 		};
 		61739A502E10D7B50002A651 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 61739B272E10EB8A0002A651 /* stepTask */;
+			baseConfigurationReferenceRelativePath = Config/Release.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -589,6 +605,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		61701A5B2E350B63004A411A /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.33.1;
+			};
+		};
 		61739BB72E10F4790002A651 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
@@ -616,6 +640,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		61701A5C2E350B63004A411A /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61701A5B2E350B63004A411A /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
 		61739BB82E10F4790002A651 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 61739BB72E10F4790002A651 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;

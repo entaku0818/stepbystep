@@ -122,81 +122,72 @@ extension AdMobManager: FullScreenContentDelegate {
     }
 }
 
-// MARK: - Ad Client Protocol
+// MARK: - Ad Client
 
-protocol AdClient {
-    func loadAd() async
-    func showAd() async -> Bool
-    var isAdAvailable: Bool { get async }
+struct AdClient {
+    var loadAd: () async -> Void
+    var showAd: () async -> Bool
+    var isAdAvailable: () async -> Bool
 }
 
-// MARK: - Live Ad Client
+// MARK: - Live Implementation
 
-class LiveAdClient: AdClient {
-    private let adManager = AdMobManager.shared
-    
-    func loadAd() async {
-        await MainActor.run {
-            adManager.loadRewardedAd()
-        }
-    }
-    
-    func showAd() async -> Bool {
-        return await withCheckedContinuation { continuation in
-            DispatchQueue.main.async {
-                self.adManager.showRewardedAd { success in
-                    continuation.resume(returning: success)
+extension AdClient {
+    static let live = Self(
+        loadAd: {
+            await MainActor.run {
+                AdMobManager.shared.loadRewardedAd()
+            }
+        },
+        showAd: {
+            await withCheckedContinuation { continuation in
+                DispatchQueue.main.async {
+                    AdMobManager.shared.showRewardedAd { success in
+                        continuation.resume(returning: success)
+                    }
                 }
             }
-        }
-    }
-    
-    var isAdAvailable: Bool {
-        get async {
+        },
+        isAdAvailable: {
             await MainActor.run {
-                return adManager.isAdAvailable
+                AdMobManager.shared.isAdAvailable
             }
         }
-    }
+    )
 }
 
-// MARK: - Mock Ad Client (テスト用)
+// MARK: - Test Implementation
 
-class MockAdClient: AdClient {
-    private var _isAdAvailable = true
-    
-    func loadAd() async {
-        // テスト用：即座に読み込み完了
-        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5秒待機
-        _isAdAvailable = true
-        print("Mock ad loaded")
-    }
-    
-    func showAd() async -> Bool {
-        guard _isAdAvailable else { return false }
-        
-        // テスト用：2秒間の疑似広告表示
-        try? await Task.sleep(nanoseconds: 2_000_000_000) // 2秒待機
-        print("Mock ad shown")
-        
-        // 次の広告をプリロード
-        await loadAd()
-        
-        return true
-    }
-    
-    var isAdAvailable: Bool {
-        get async {
-            return _isAdAvailable
+extension AdClient {
+    static let test = Self(
+        loadAd: {
+            // テスト用：即座に読み込み完了
+            try? await Task.sleep(nanoseconds: 500_000_000) // 0.5秒待機
+            print("Mock ad loaded")
+        },
+        showAd: {
+            // テスト用：2秒間の疑似広告表示
+            try? await Task.sleep(nanoseconds: 2_000_000_000) // 2秒待機
+            print("Mock ad shown")
+            return true
+        },
+        isAdAvailable: {
+            return true
         }
-    }
+    )
+    
+    static let testNoAds = Self(
+        loadAd: { },
+        showAd: { false },
+        isAdAvailable: { false }
+    )
 }
 
 // MARK: - Dependency Key
 
 private enum AdClientKey: DependencyKey {
-    static let liveValue: AdClient = LiveAdClient()
-    static let testValue: AdClient = MockAdClient()
+    static let liveValue = AdClient.live
+    static let testValue = AdClient.test
 }
 
 extension DependencyValues {

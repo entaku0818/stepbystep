@@ -14,5 +14,7 @@
 	<string>$(FIREBASE_FUNCTIONS_URL)</string>
 	<key>APIEnvironment</key>
 	<string>$(API_ENVIRONMENT)</string>
+	<key>RevenueCatAPIKey</key>
+	<string>$(REVENUECAT_API_KEY)</string>
 </dict>
 </plist>

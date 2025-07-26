@@ -43,4 +43,17 @@ enum AppConfig {
         }
         return env
     }
+    
+    // RevenueCat設定
+    static var revenueCatApiKey: String {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "RevenueCatAPIKey") as? String else {
+            #if DEBUG
+            // デバッグ時はテスト用キーを使用（実際のキーに置き換えてください）
+            return "appl_XXXXXXXXXXXXXXXXXXXXXXXXXX"
+            #else
+            fatalError("RevenueCatAPIKey not found in Info.plist")
+            #endif
+        }
+        return key
+    }
 }

@@ -7,7 +7,7 @@
 
 import Testing
 import ComposableArchitecture
-@testable import stepbystep
+@testable import TaskSteps
 
 @MainActor
 struct TaskInputReducerTests {

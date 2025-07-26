@@ -68,6 +68,7 @@ struct TaskInputReducer {
     @Dependency(\.taskSplitterClient) var taskSplitterClient
     @Dependency(\.taskStorageClient) var taskStorageClient
     @Dependency(\.adClient) var adClient
+    @Dependency(\.usageLimitClient) var usageLimitClient
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -79,7 +80,7 @@ struct TaskInputReducer {
                 
             case .onAppear:
                 // 使用制限の残り回数を更新
-                state.remainingUsage = UsageLimitManager.shared.remainingUsage
+                state.remainingUsage = usageLimitClient.remainingUsage()
                 
                 return .run { send in
                     do {
@@ -116,7 +117,7 @@ struct TaskInputReducer {
                 }
                 
                 // 使用制限チェック
-                if UsageLimitManager.shared.hasReachedLimit {
+                if usageLimitClient.hasReachedLimit() {
                     state.showUsageLimitAlert = true
                     return .none
                 }
@@ -133,7 +134,7 @@ struct TaskInputReducer {
                     await send(.adLoadingStarted)
                     
                     // 広告が利用可能かチェック
-                    let isAdAvailable = await adClient.isAdAvailable
+                    let isAdAvailable = await adClient.isAdAvailable()
                     
                     if isAdAvailable {
                         // 広告を表示
@@ -176,8 +177,8 @@ struct TaskInputReducer {
                 state.showSteps = true
                 
                 // 使用回数をインクリメント
-                UsageLimitManager.shared.incrementUsage()
-                state.remainingUsage = UsageLimitManager.shared.remainingUsage
+                usageLimitClient.incrementUsage()
+                state.remainingUsage = usageLimitClient.remainingUsage()
                 
                 // タスクを永続化
                 let newTask = PersistedTask.createFromSteps(state.taskTitle, stepContents: steps)
@@ -245,7 +246,7 @@ struct TaskInputReducer {
                 return .none
                 
             case .updateRemainingUsage:
-                state.remainingUsage = UsageLimitManager.shared.remainingUsage
+                state.remainingUsage = usageLimitClient.remainingUsage()
                 return .none
                 
             case .dismissUsageLimitAlert:
@@ -258,6 +259,7 @@ struct TaskInputReducer {
 
 struct TaskInputView: View {
     let store: StoreOf<TaskInputReducer>
+    @Dependency(\.usageLimitClient) var usageLimitClient
     
     private func loadingText(store: StoreOf<TaskInputReducer>) -> String {
         if let adMessage = store.adLoadingMessage {
@@ -378,7 +380,7 @@ struct TaskInputView: View {
                     store.send(.dismissUsageLimitAlert)
                 }
             } message: {
-                Text(UsageLimitManager.shared.getLimitMessage())
+                Text(usageLimitClient.getLimitMessage())
             }
         }
     }

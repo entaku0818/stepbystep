@@ -8,14 +8,20 @@
 import SwiftUI
 import FirebaseCore
 import ComposableArchitecture
+import Dependencies
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    @Dependency(\.revenueCatClient) var revenueCatClient
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
         
         // AdMobの初期化
         _ = AdMobManager.shared
+        
+        // RevenueCatの初期化
+        revenueCatClient.configure()
         
         return true
     }
