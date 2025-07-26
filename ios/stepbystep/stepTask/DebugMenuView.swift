@@ -10,6 +10,7 @@ struct DebugMenuReducer {
         var showingResetConfirmation = false
         var showingAlert = false
         var alertMessage = ""
+        var showingScreenshotView = false
     }
     
     enum Action {
@@ -21,6 +22,8 @@ struct DebugMenuReducer {
         case setAlert(Bool, String)
         case toggleUnlimitedUsage
         case forceCrashTapped
+        case screenshotModeTapped
+        case setShowingScreenshotView(Bool)
     }
     
     @Dependency(\.usageLimitClient) var usageLimitClient
@@ -70,6 +73,14 @@ struct DebugMenuReducer {
                 
             case .forceCrashTapped:
                 fatalError("Force crash for testing")
+                
+            case .screenshotModeTapped:
+                state.showingScreenshotView = true
+                return .none
+                
+            case let .setShowingScreenshotView(showing):
+                state.showingScreenshotView = showing
+                return .none
             }
         }
     }
@@ -116,6 +127,12 @@ struct DebugMenuView: View {
                     
                     Button(action: testRestore) {
                         Label("購入の復元をテスト", systemImage: "arrow.clockwise")
+                    }
+                }
+                
+                Section("スクリーンショット") {
+                    Button(action: { store.send(.screenshotModeTapped) }) {
+                        Label("スクリーンショットモード", systemImage: "camera")
                     }
                 }
                 
@@ -166,6 +183,9 @@ struct DebugMenuView: View {
                 }
             } message: {
                 Text(store.alertMessage)
+            }
+            .fullScreenCover(isPresented: $store.showingScreenshotView.sending(\.setShowingScreenshotView)) {
+                ScreenshotView()
             }
         }
     }
