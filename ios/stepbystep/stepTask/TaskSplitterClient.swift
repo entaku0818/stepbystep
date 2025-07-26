@@ -9,7 +9,7 @@ enum APIEnvironment: CaseIterable {
     var baseURL: String {
         switch self {
         case .production:
-            return "https://us-central1-stepbystep-tasks.cloudfunctions.net"
+            return AppConfig.firebaseFunctionsUrl
         }
     }
     

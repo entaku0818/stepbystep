@@ -1,0 +1,23 @@
+//
+//  Common.xcconfig
+//  TaskSteps
+//
+//  共通設定
+//
+
+// アプリ基本情報
+PRODUCT_BUNDLE_IDENTIFIER = com.entaku.stepTask
+DEVELOPMENT_TEAM = 4YZQY4C47E
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+// 開発言語設定
+SWIFT_VERSION = 5.0
+IPHONEOS_DEPLOYMENT_TARGET = 18.4
+
+// Info.plist設定
+INFOPLIST_FILE = stepTask/TaskSteps-Info.plist
+
+// アプリ名
+PRODUCT_NAME = Task Steps
+APP_DISPLAY_NAME = Task Steps

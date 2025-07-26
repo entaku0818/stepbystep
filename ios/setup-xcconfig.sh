@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# setup-xcconfig.sh
+# Task Steps プロジェクトの xcconfig セットアップスクリプト
+
+echo "Task Steps - xcconfig セットアップ"
+echo "=================================="
+echo ""
+echo "このスクリプトは手動で実行してください:"
+echo ""
+echo "1. Xcode で TaskSteps.xcodeproj を開く"
+echo "2. プロジェクトナビゲータでプロジェクト（青いアイコン）を選択"
+echo "3. PROJECT セクションの TaskSteps を選択"
+echo "4. Info タブを選択"
+echo "5. Configurations セクションで:"
+echo "   - Debug の横の ▶ をクリックして展開"
+echo "   - TaskSteps の横のドロップダウンから 'Debug' を選択"
+echo "   - 右側の + ボタンをクリックして 'Add Configuration File...'"
+echo "   - stepTask/Config/Debug.xcconfig を選択"
+echo "   "
+echo "   - Release の横の ▶ をクリックして展開"
+echo "   - TaskSteps の横のドロップダウンから 'Release' を選択"
+echo "   - 右側の + ボタンをクリックして 'Add Configuration File...'"
+echo "   - stepTask/Config/Release.xcconfig を選択"
+echo ""
+echo "6. 各 xcconfig ファイルで Common.xcconfig をインクルード:"
+echo "   Debug.xcconfig と Release.xcconfig の先頭に以下を追加:"
+echo "   #include \"Common.xcconfig\""
+echo ""
+echo "設定完了後、プロジェクトをビルドしてください。"
+echo ""
+echo "注意: Release.xcconfig の AdMob ID は本番用に更新してください。"

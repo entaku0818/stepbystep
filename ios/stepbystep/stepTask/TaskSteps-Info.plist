@@ -7,6 +7,12 @@
 		<dict/>
 	</array>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>$(ADMOB_APP_ID)</string>
+	<key>AdMobRewardedAdUnitId</key>
+	<string>$(ADMOB_REWARDED_AD_UNIT_ID)</string>
+	<key>FirebaseFunctionsURL</key>
+	<string>$(FIREBASE_FUNCTIONS_URL)</string>
+	<key>APIEnvironment</key>
+	<string>$(API_ENVIRONMENT)</string>
 </dict>
 </plist>

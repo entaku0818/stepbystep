@@ -78,8 +78,15 @@ struct TaskHistoryReducer {
                 return .none
                 
             case let .resumeTask(task):
-                // タスクを再開する処理（必要に応じて実装）
-                return .none
+                // タスクを再開する処理
+                return .run { send in
+                    do {
+                        // 現在のタスクとして設定
+                        try await taskStorageClient.saveCurrentTask(task)
+                    } catch {
+                        await send(.loadFailed("タスクの再開に失敗しました"))
+                    }
+                }
                 
             case let .loadFailed(message):
                 state.isLoading = false
@@ -328,6 +335,8 @@ struct ProgressBar: View {
 struct TaskDetailView: View {
     let task: PersistedTask
     let store: StoreOf<TaskHistoryReducer>
+    @Environment(\.dismiss) var dismiss
+    @State private var showResumeNavigation = false
     
     var body: some View {
         NavigationStack {
@@ -416,6 +425,25 @@ struct TaskDetailView: View {
                             .font(.caption)
                         }
                     }
+                    
+                    // 未完了タスクの場合、再開ボタンを表示
+                    if !task.isCompleted {
+                        Button(action: {
+                            store.send(.resumeTask(task))
+                            showResumeNavigation = true
+                        }) {
+                            HStack {
+                                Image(systemName: "play.circle.fill")
+                                Text("このタスクを再開")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        }
+                        .padding(.top)
+                    }
                 }
                 .padding()
             }
@@ -427,6 +455,11 @@ struct TaskDetailView: View {
                         store.send(.deselectTask)
                     }
                 }
+            }
+            .navigationDestination(isPresented: $showResumeNavigation) {
+                StepExecutionViewFromHistory(task: task, onTaskCompleted: {
+                    dismiss()
+                })
             }
         }
     }
@@ -443,5 +476,72 @@ struct TaskDetailView: View {
         formatter.locale = Locale(identifier: "ja_JP")
         formatter.dateFormat = "yyyy年MM月dd日 HH:mm"
         return formatter.string(from: date)
+    }
+}
+
+// MARK: - Step Execution View Wrapper for History
+
+struct StepExecutionViewFromHistory: View {
+    let task: PersistedTask
+    let onTaskCompleted: () -> Void
+    @Dependency(\.taskStorageClient) var taskStorageClient
+    @State private var updatedTask: PersistedTask
+    
+    init(task: PersistedTask, onTaskCompleted: @escaping () -> Void) {
+        self.task = task
+        self.onTaskCompleted = onTaskCompleted
+        self._updatedTask = State(initialValue: task)
+    }
+    
+    var body: some View {
+        StepExecutionViewWithState(
+            steps: updatedTask.steps.map { $0.content },
+            initialCompletedSteps: Set(updatedTask.steps.enumerated().compactMap { index, step in
+                step.isCompleted ? index : nil
+            }),
+            onTaskCompleted: {
+                // タスクを完了としてマーク
+                Task {
+                    do {
+                        var completedTask = updatedTask
+                        completedTask.completedAt = Date()
+                        for i in 0..<completedTask.steps.count {
+                            completedTask.steps[i].isCompleted = true
+                            completedTask.steps[i].completedAt = Date()
+                        }
+                        
+                        // タスクを保存
+                        try await taskStorageClient.saveCurrentTask(nil)
+                        var tasks = try await taskStorageClient.loadTasks()
+                        if let index = tasks.firstIndex(where: { $0.id == completedTask.id }) {
+                            tasks[index] = completedTask
+                            try await taskStorageClient.saveTasks(tasks)
+                        }
+                    } catch {
+                        print("Failed to save completed task: \(error)")
+                    }
+                }
+                onTaskCompleted()
+            },
+            onStepCompleted: { stepIndex in
+                // ステップ完了時の処理
+                Task {
+                    do {
+                        updatedTask.steps[stepIndex].isCompleted = true
+                        updatedTask.steps[stepIndex].completedAt = Date()
+                        
+                        // 進行状況を保存
+                        try await taskStorageClient.saveCurrentTask(updatedTask)
+                        var tasks = try await taskStorageClient.loadTasks()
+                        if let index = tasks.firstIndex(where: { $0.id == updatedTask.id }) {
+                            tasks[index] = updatedTask
+                            try await taskStorageClient.saveTasks(tasks)
+                        }
+                    } catch {
+                        print("Failed to update step: \(error)")
+                    }
+                }
+            }
+        )
     }
 }

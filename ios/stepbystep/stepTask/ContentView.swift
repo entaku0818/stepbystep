@@ -604,6 +604,244 @@ struct StepExecutionView: View {
     }
 }
 
+// MARK: - Step Execution View with State (for resuming tasks)
+
+struct StepExecutionViewWithState: View {
+    let steps: [String]
+    let initialCompletedSteps: Set<Int>
+    let onTaskCompleted: () -> Void
+    let onStepCompleted: ((Int) -> Void)?
+    
+    @State private var currentStepIndex: Int = 0
+    @State private var completedSteps: Set<Int>
+    @State private var showCompletionAlert = false
+    @State private var showCompletionAnimation = false
+    @State private var animateConfetti = false
+    @State private var animateSuccessIcon = false
+    @State private var animationScale: CGFloat = 0.1
+    
+    init(steps: [String], 
+         initialCompletedSteps: Set<Int> = [], 
+         onTaskCompleted: @escaping () -> Void,
+         onStepCompleted: ((Int) -> Void)? = nil) {
+        self.steps = steps
+        self.initialCompletedSteps = initialCompletedSteps
+        self.onTaskCompleted = onTaskCompleted
+        self.onStepCompleted = onStepCompleted
+        self._completedSteps = State(initialValue: initialCompletedSteps)
+        
+        // 最初の未完了ステップから開始
+        let firstIncompleteIndex = (0..<steps.count).first { !initialCompletedSteps.contains($0) } ?? 0
+        self._currentStepIndex = State(initialValue: firstIncompleteIndex)
+    }
+    
+    private var allStepsCompleted: Bool {
+        completedSteps.count == steps.count
+    }
+    
+    private var currentStep: String? {
+        guard currentStepIndex < steps.count else { return nil }
+        return steps[currentStepIndex]
+    }
+    
+    var body: some View {
+        ZStack {
+            VStack(spacing: 24) {
+                // Progress indicator
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("進捗: \(completedSteps.count)/\(steps.count)")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                    
+                    ProgressView(value: Double(completedSteps.count), total: Double(steps.count))
+                        .tint(.blue)
+                }
+                .padding(.horizontal)
+            
+            // Current step display
+            if let step = currentStep {
+                VStack(spacing: 16) {
+                    Text("ステップ \(currentStepIndex + 1)")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.blue)
+                    
+                    Text(step)
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(12)
+                    
+                    HStack(spacing: 16) {
+                        Button("完了") {
+                            completeCurrentStep()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(completedSteps.contains(currentStepIndex))
+                        
+                        if currentStepIndex > 0 {
+                            Button("前のステップ") {
+                                currentStepIndex = max(0, currentStepIndex - 1)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                        
+                        if currentStepIndex < steps.count - 1 && completedSteps.contains(currentStepIndex) {
+                            Button("次のステップ") {
+                                currentStepIndex = min(steps.count - 1, currentStepIndex + 1)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                .padding()
+            }
+            
+            // All steps overview
+            VStack(alignment: .leading, spacing: 12) {
+                Text("全ステップ一覧")
+                    .font(.headline)
+                    .padding(.horizontal)
+                
+                LazyVStack(spacing: 8) {
+                    ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
+                        HStack {
+                            // Step number circle
+                            ZStack {
+                                Circle()
+                                    .fill(stepColor(for: index))
+                                    .frame(width: 32, height: 32)
+                                
+                                if completedSteps.contains(index) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.white)
+                                        .fontWeight(.bold)
+                                } else {
+                                    Text("\(index + 1)")
+                                        .foregroundColor(.white)
+                                        .fontWeight(.semibold)
+                                }
+                            }
+                            
+                            Text(step)
+                                .font(.body)
+                                .opacity(completedSteps.contains(index) ? 0.7 : 1.0)
+                                .strikethrough(completedSteps.contains(index))
+                            
+                            Spacer()
+                            
+                            if index == currentStepIndex {
+                                Text("現在")
+                                    .font(.caption)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.blue.opacity(0.2))
+                                    .cornerRadius(8)
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                        .background(index == currentStepIndex ? Color.blue.opacity(0.05) : Color.clear)
+                        .cornerRadius(8)
+                        .onTapGesture {
+                            // Allow navigation to completed steps or current step
+                            if completedSteps.contains(index) || index == currentStepIndex {
+                                currentStepIndex = index
+                            }
+                        }
+                    }
+                }
+            }
+            
+            Spacer()
+            
+            // Task completion button (only when all steps are done)
+            if allStepsCompleted && !showCompletionAnimation {
+                Button("タスクを完了") {
+                    startCompletionAnimation()
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .padding()
+            }
+            }
+            .navigationTitle("ステップ実行")
+            .navigationBarBackButtonHidden(true) // 戻るボタンを非表示
+            
+            // Completion Animation Overlay
+            if showCompletionAnimation {
+                CompletionAnimationView(
+                    animateSuccessIcon: $animateSuccessIcon,
+                    animateConfetti: $animateConfetti,
+                    animationScale: $animationScale
+                )
+                .transition(.opacity)
+            }
+        }
+        .alert("タスク完了！", isPresented: $showCompletionAlert) {
+            Button("OK") {
+                onTaskCompleted()
+            }
+        } message: {
+            Text("すべてのステップが完了しました。\nお疲れさまでした！")
+        }
+    }
+    
+    private func completeCurrentStep() {
+        completedSteps.insert(currentStepIndex)
+        onStepCompleted?(currentStepIndex)
+        
+        // Check if all steps are completed
+        if allStepsCompleted {
+            // Start completion animation
+            startCompletionAnimation()
+        } else {
+            // Move to next uncompleted step
+            if let nextIndex = (currentStepIndex + 1..<steps.count).first(where: { !completedSteps.contains($0) }) {
+                currentStepIndex = nextIndex
+            }
+        }
+    }
+    
+    private func startCompletionAnimation() {
+        withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
+            showCompletionAnimation = true
+            animationScale = 1.2
+        }
+        
+        // Animate success icon
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                animateSuccessIcon = true
+                animationScale = 1.0
+            }
+        }
+        
+        // Show confetti effect
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            withAnimation(.easeInOut(duration: 1.0)) {
+                animateConfetti = true
+            }
+        }
+        
+        // Show completion alert after animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            showCompletionAlert = true
+        }
+    }
+    
+    private func stepColor(for index: Int) -> Color {
+        if completedSteps.contains(index) {
+            return .green
+        } else if index == currentStepIndex {
+            return .blue
+        } else {
+            return .gray
+        }
+    }
+}
+
 // MARK: - Completion Animation View
 
 struct CompletionAnimationView: View {

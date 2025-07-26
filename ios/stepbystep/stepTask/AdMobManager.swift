@@ -13,8 +13,8 @@ class AdMobManager: NSObject, ObservableObject {
     private var rewardedAd: RewardedAd?
     private var isAdLoading = false
     
-    // テスト用広告ユニットID（本番時は実際のIDに変更）
-    private let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313" // テスト用ID
+    // 広告ユニットID（環境変数から取得）
+    private let rewardedAdUnitID = AppConfig.adMobRewardedAdUnitId
     
     override init() {
         super.init()

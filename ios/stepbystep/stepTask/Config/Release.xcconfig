@@ -1,0 +1,21 @@
+//
+//  Release.xcconfig
+//  TaskSteps
+//
+//  Release環境用の設定
+//
+
+#include "Common.xcconfig"
+
+// AdMob設定（本番用のIDに置き換えてください）
+ADMOB_APP_ID = ca-app-pub-XXXXXXXXXXXX~XXXXXXXXXX
+ADMOB_REWARDED_AD_UNIT_ID = ca-app-pub-XXXXXXXXXXXX/XXXXXXXXXX
+
+// Firebase Functions設定
+FIREBASE_FUNCTIONS_URL = https://us-central1-stepbystep-8a395.cloudfunctions.net
+
+// API設定
+API_ENVIRONMENT = production
+
+// ビルド設定
+ENABLE_USER_SCRIPT_SANDBOXING = NO
