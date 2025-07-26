@@ -502,7 +502,9 @@ struct ProUpgradePromptView: View {
                 .padding(.horizontal)
                 
                 Button("後で") {
-                    dismiss()
+                    Task { @MainActor in
+                        await dismiss()
+                    }
                 }
                 .foregroundColor(.gray)
                 .padding(.bottom)
