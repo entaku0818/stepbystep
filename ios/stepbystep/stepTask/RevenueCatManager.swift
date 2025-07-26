@@ -29,6 +29,7 @@ enum SubscriptionType: String, CaseIterable {
     var features: [String] {
         return [
             "無制限のタスク分割",
+            "ステップを子タスクに分割",
             "広告なし体験",
             "優先サポート",
             "今後追加される全ての機能"

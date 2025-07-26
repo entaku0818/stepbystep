@@ -368,9 +368,13 @@ struct TaskInputView: View {
                 get: { store.showSteps },
                 set: { _ in }
             )) {
-                StepExecutionView(steps: store.steps, onTaskCompleted: {
-                    store.send(.dismissSteps)
-                })
+                // Pro会員チェックして適切な画面を表示
+                ProAwareStepExecutionView(
+                    steps: store.steps,
+                    onTaskCompleted: {
+                        store.send(.dismissSteps)
+                    }
+                )
             }
             .alert("使用制限に達しました", isPresented: Binding(
                 get: { store.showUsageLimitAlert },
@@ -954,6 +958,42 @@ struct ConfettiItem {
     let color: Color
     var opacity: Double
     var rotation: Double
+}
+
+// MARK: - Pro Aware Step Execution View
+
+struct ProAwareStepExecutionView: View {
+    let steps: [String]
+    let onTaskCompleted: () -> Void
+    @Dependency(\.revenueCatClient) var revenueCatClient
+    @State private var isProUser: Bool = false
+    
+    var body: some View {
+        Group {
+            if isProUser {
+                // Pro会員用の画面
+                ProStepExecutionView(
+                    store: Store(
+                        initialState: ProStepExecutionReducer.State(
+                            steps: steps.map { ProStepExecutionReducer.State.StepItem(content: $0) }
+                        )
+                    ) {
+                        ProStepExecutionReducer()
+                    },
+                    onTaskCompleted: onTaskCompleted
+                )
+            } else {
+                // 通常の画面
+                StepExecutionView(
+                    steps: steps,
+                    onTaskCompleted: onTaskCompleted
+                )
+            }
+        }
+        .task {
+            isProUser = await revenueCatClient.isProUser()
+        }
+    }
 }
 
 struct ContentView: View {
