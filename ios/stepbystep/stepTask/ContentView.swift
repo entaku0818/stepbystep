@@ -272,6 +272,13 @@ struct TaskInputView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
+                // ステップタスクAIの説明
+                Text("ステップタスクAIでタスクを分割して管理する")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 8)
+                
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text("タスク名")
