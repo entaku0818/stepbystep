@@ -12,6 +12,8 @@ struct SettingsReducer {
         var showingPrivacyPolicy = false
         var showingTermsOfService = false
         var showingSupport = false
+        var showingDebugMenu = false
+        var debugTapCount = 0
         var appVersion: String {
             Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
         }
@@ -28,8 +30,10 @@ struct SettingsReducer {
         case setShowingPrivacyPolicy(Bool)
         case setShowingTermsOfService(Bool)
         case setShowingSupport(Bool)
+        case setShowingDebugMenu(Bool)
         case checkProStatus
         case setProStatus(Bool)
+        case versionTapped
     }
     
     @Dependency(\.revenueCatClient) var revenueCatClient
@@ -80,6 +84,13 @@ struct SettingsReducer {
                 state.showingSupport = showing
                 return .none
                 
+            case let .setShowingDebugMenu(showing):
+                state.showingDebugMenu = showing
+                if !showing {
+                    state.debugTapCount = 0
+                }
+                return .none
+                
             case .checkProStatus:
                 return .run { send in
                     let isPro = await revenueCatClient.isProUser()
@@ -88,6 +99,15 @@ struct SettingsReducer {
                 
             case let .setProStatus(isPro):
                 state.isProUser = isPro
+                return .none
+                
+            case .versionTapped:
+                #if DEBUG
+                state.debugTapCount += 1
+                if state.debugTapCount >= 7 {
+                    state.showingDebugMenu = true
+                }
+                #endif
                 return .none
             }
         }
@@ -177,12 +197,15 @@ struct SettingsView: View {
                 
                 // About Section
                 Section("アプリについて") {
-                    HStack {
-                        Text("バージョン")
-                        Spacer()
-                        Text(store.appVersion)
-                            .foregroundColor(.secondary)
+                    Button(action: { store.send(.versionTapped) }) {
+                        HStack {
+                            Text("バージョン")
+                            Spacer()
+                            Text(store.appVersion)
+                                .foregroundColor(.secondary)
+                        }
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .navigationTitle("設定")
@@ -208,6 +231,15 @@ struct SettingsView: View {
             .sheet(isPresented: $store.showingSupport.sending(\.setShowingSupport)) {
                 SupportView()
             }
+            #if DEBUG
+            .sheet(isPresented: $store.showingDebugMenu.sending(\.setShowingDebugMenu)) {
+                DebugMenuView(
+                    store: Store(initialState: DebugMenuReducer.State()) {
+                        DebugMenuReducer()
+                    }
+                )
+            }
+            #endif
         }
         .onAppear {
             store.send(.onAppear)
