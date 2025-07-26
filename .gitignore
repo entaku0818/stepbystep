@@ -94,3 +94,12 @@ iOSInjectionProject/
 
 # Build directory
 build/
+
+# Firebase configuration files
+GoogleService-Info.plist
+google-services.json
+
+# Environment files
+.env
+.env.local
+.env.production
