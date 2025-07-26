@@ -1,18 +1,19 @@
 //
-//  Debug.xcconfig
+//  Debug.xcconfig.example
 //  TaskSteps
 //
-//  Debug環境用の設定
+//  Debug環境用の設定例
+//  使用方法: このファイルをDebug.xcconfigにコピーして、実際の値を設定してください
 //
 
 #include "Common.xcconfig"
 
-// AdMob設定
+// AdMob設定（テスト用ID）
 ADMOB_APP_ID = ca-app-pub-3940256099942544~3347511713
 ADMOB_REWARDED_AD_UNIT_ID = ca-app-pub-3940256099942544/1712485313
 
 // Firebase Functions設定
-FIREBASE_FUNCTIONS_URL = https://us-central1-stepbystep-8a395.cloudfunctions.net
+FIREBASE_FUNCTIONS_URL = https://us-central1-YOUR-PROJECT-ID.cloudfunctions.net
 
 // API設定
 API_ENVIRONMENT = production

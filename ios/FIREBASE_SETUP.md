@@ -1,6 +1,27 @@
 # Firebase Setup for Task Steps
 
-## GoogleService-Info.plist の設定
+## 環境設定ファイルのセットアップ
+
+### 1. xcconfig ファイルの設定
+
+このプロジェクトではセキュリティ上の理由から、環境固有の設定ファイルをGitに含めていません。
+以下の手順で設定してください：
+
+1. **Debug.xcconfig の作成**
+   ```bash
+   cp ios/stepbystep/stepTask/Config/Debug.xcconfig.example ios/stepbystep/stepTask/Config/Debug.xcconfig
+   ```
+
+2. **Release.xcconfig の作成**
+   ```bash
+   cp ios/stepbystep/stepTask/Config/Release.xcconfig.example ios/stepbystep/stepTask/Config/Release.xcconfig
+   ```
+
+3. **設定値の更新**
+   - Debug.xcconfig: 開発環境用の設定（テスト用AdMob IDなど）
+   - Release.xcconfig: 本番環境用の設定（本番用AdMob ID、Firebase URLなど）
+
+### 2. GoogleService-Info.plist の設定
 
 このプロジェクトではセキュリティ上の理由から `GoogleService-Info.plist` をGitに含めていません。
 以下の手順でファイルを設定してください：

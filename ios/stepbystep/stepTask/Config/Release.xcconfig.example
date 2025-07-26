@@ -1,8 +1,9 @@
 //
-//  Release.xcconfig
+//  Release.xcconfig.example
 //  TaskSteps
 //
-//  Release環境用の設定
+//  Release環境用の設定例
+//  使用方法: このファイルをRelease.xcconfigにコピーして、実際の値を設定してください
 //
 
 #include "Common.xcconfig"
@@ -12,7 +13,7 @@ ADMOB_APP_ID = ca-app-pub-XXXXXXXXXXXX~XXXXXXXXXX
 ADMOB_REWARDED_AD_UNIT_ID = ca-app-pub-XXXXXXXXXXXX/XXXXXXXXXX
 
 // Firebase Functions設定
-FIREBASE_FUNCTIONS_URL = https://us-central1-stepbystep-8a395.cloudfunctions.net
+FIREBASE_FUNCTIONS_URL = https://us-central1-YOUR-PROJECT-ID.cloudfunctions.net
 
 // API設定
 API_ENVIRONMENT = production
