@@ -186,6 +186,9 @@ struct TaskListView: View {
             }
         }
         .listStyle(PlainListStyle())
+        .refreshable {
+            store.send(.loadTasks)
+        }
     }
 }
 
