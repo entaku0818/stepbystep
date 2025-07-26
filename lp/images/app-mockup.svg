@@ -1,0 +1,60 @@
+<svg viewBox="0 0 320 640" xmlns="http://www.w3.org/2000/svg">
+  <!-- iPhone Frame -->
+  <rect x="0" y="0" width="320" height="640" rx="40" fill="#1a1a1a"/>
+  <rect x="10" y="10" width="300" height="620" rx="30" fill="#f8f8f8"/>
+  
+  <!-- Status Bar -->
+  <rect x="10" y="10" width="300" height="44" rx="30" fill="#ffffff"/>
+  <text x="160" y="37" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000000">9:41</text>
+  
+  <!-- App Header -->
+  <rect x="10" y="54" width="300" height="60" fill="#ffffff"/>
+  <text x="160" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#4338ca">Task Steps</text>
+  
+  <!-- Task Input Card -->
+  <rect x="20" y="130" width="280" height="180" rx="12" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#111827">新しいタスク</text>
+  
+  <!-- Task Input Field -->
+  <rect x="30" y="180" width="260" height="80" rx="8" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#6b7280">レポートを書く</text>
+  
+  <!-- AI Split Button -->
+  <rect x="30" y="270" width="260" height="44" rx="22" fill="#4f46e5"/>
+  <text x="160" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#ffffff">AIで5つのステップに分割</text>
+  
+  <!-- Steps Preview -->
+  <rect x="20" y="330" width="280" height="280" rx="12" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#111827">生成されたステップ</text>
+  
+  <!-- Step Items -->
+  <g>
+    <!-- Step 1 -->
+    <rect x="30" y="380" width="260" height="40" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+    <circle cx="50" cy="400" r="8" fill="#22c55e"/>
+    <text x="50" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">1</text>
+    <text x="70" y="405" font-family="Arial, sans-serif" font-size="12" fill="#166534">必要な資料を集める</text>
+    
+    <!-- Step 2 -->
+    <rect x="30" y="430" width="260" height="40" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="1"/>
+    <circle cx="50" cy="450" r="8" fill="#f59e0b"/>
+    <text x="50" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">2</text>
+    <text x="70" y="455" font-family="Arial, sans-serif" font-size="12" fill="#92400e">アウトラインを作成する</text>
+    
+    <!-- Step 3 -->
+    <rect x="30" y="480" width="260" height="40" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+    <circle cx="50" cy="500" r="8" fill="#9ca3af"/>
+    <text x="50" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">3</text>
+    <text x="70" y="505" font-family="Arial, sans-serif" font-size="12" fill="#374151">導入部分を書く</text>
+    
+    <!-- Step 4 -->
+    <rect x="30" y="530" width="260" height="40" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+    <circle cx="50" cy="550" r="8" fill="#9ca3af"/>
+    <text x="50" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">4</text>
+    <text x="70" y="555" font-family="Arial, sans-serif" font-size="12" fill="#374151">本文を執筆する</text>
+  </g>
+  
+  <!-- Progress Bar -->
+  <rect x="30" y="590" width="260" height="4" rx="2" fill="#e5e7eb"/>
+  <rect x="30" y="590" width="52" height="4" rx="2" fill="#4f46e5"/>
+</svg>
