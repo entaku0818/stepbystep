@@ -750,4 +750,3 @@ struct FeatureRowScreenshot: View {
         }
     }
 }
-                    <truncated>

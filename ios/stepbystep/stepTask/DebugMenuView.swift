@@ -27,7 +27,7 @@ struct DebugMenuReducer {
     }
     
     @Dependency(\.usageLimitClient) var usageLimitClient
-    @Dependency(\.taskStorage) var taskStorage
+    @Dependency(\.taskStorageClient) var taskStorageClient
     @Dependency(\.revenueCatClient) var revenueCatClient
     
     var body: some ReducerOf<Self> {
@@ -48,7 +48,7 @@ struct DebugMenuReducer {
                 return .run { send in
                     // Reset all data
                     usageLimitClient.resetUsageForDebug()
-                    try? await taskStorage.deleteAllTasks()
+                    try? await taskStorageClient.deleteAllTasks()
                     await send(.setAlert(true, "すべてのデータをリセットしました"))
                 }
                 
