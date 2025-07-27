@@ -48,7 +48,7 @@ struct DebugMenuReducer {
                 return .run { send in
                     // Reset all data
                     usageLimitClient.resetUsageForDebug()
-                    try? await taskStorageClient.deleteAllTasks()
+                    try? await taskStorageClient.clearAllTasks()
                     await send(.setAlert(true, "すべてのデータをリセットしました"))
                 }
                 
@@ -95,14 +95,15 @@ struct DebugMenuView: View {
     
     var body: some View {
         NavigationStack {
-            List {
+            listContent
+        }
+    }
+    
+    @ViewBuilder
+    private var listContent: some View {
+        List {
                 Section("使用制限") {
-                    HStack {
-                        Text("現在の使用回数")
-                        Spacer()
-                        Text("\(usageLimitClient.currentUsageCount()) / \(usageLimitClient.hasReachedLimit() ? "∞" : "3")")
-                            .foregroundColor(.secondary)
-                    }
+                    usageLimitRow
                     
                     Button(action: { store.send(.resetUsageLimitTapped) }) {
                         Label("使用回数をリセット", systemImage: "arrow.counterclockwise")
@@ -187,6 +188,18 @@ struct DebugMenuView: View {
             .fullScreenCover(isPresented: $store.showingScreenshotView.sending(\.setShowingScreenshotView)) {
                 ScreenshotView()
             }
+        }
+    }
+    
+    @ViewBuilder
+    private var usageLimitRow: some View {
+        HStack {
+            Text("現在の使用回数")
+            Spacer()
+            let currentCount = usageLimitClient.currentUsageCount()
+            let limitText = usageLimitClient.hasReachedLimit() ? "∞" : "3"
+            Text("\(currentCount) / \(limitText)")
+                .foregroundColor(.secondary)
         }
     }
     
