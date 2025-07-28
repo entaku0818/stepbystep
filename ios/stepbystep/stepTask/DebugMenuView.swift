@@ -121,7 +121,10 @@ struct DebugMenuView: View {
         } message: {
             Text("すべてのタスクと設定がリセットされます。この操作は取り消せません。")
         }
-        .alert("デバッグ", isPresented: $store.showingAlert.sending(\.setAlert)) {
+        .alert("デバッグ", isPresented: Binding(
+            get: { store.showingAlert },
+            set: { _ in store.send(.setAlert(false, "")) }
+        )) {
             Button("OK") {
                 store.send(.setAlert(false, ""))
             }
