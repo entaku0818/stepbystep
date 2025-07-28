@@ -102,94 +102,37 @@ struct DebugMenuView: View {
     @ViewBuilder
     private var listContent: some View {
         List {
-                Section("使用制限") {
-                    usageLimitRow
-                    
-                    Button(action: { store.send(.resetUsageLimitTapped) }) {
-                        Label("使用回数をリセット", systemImage: "arrow.counterclockwise")
-                    }
-                    
-                    Button(action: { store.send(.toggleUnlimitedUsage) }) {
-                        Label("無制限モードを切り替え", systemImage: "infinity")
-                    }
-                }
-                
-                Section("データ管理") {
-                    Button(role: .destructive, action: { store.send(.resetAllDataTapped) }) {
-                        Label("すべてのデータをリセット", systemImage: "trash")
-                            .foregroundColor(.red)
-                    }
-                }
-                
-                Section("課金テスト") {
-                    Button(action: testPurchase) {
-                        Label("テスト購入を実行", systemImage: "creditcard")
-                    }
-                    
-                    Button(action: testRestore) {
-                        Label("購入の復元をテスト", systemImage: "arrow.clockwise")
-                    }
-                }
-                
-                Section("スクリーンショット") {
-                    Button(action: { store.send(.screenshotModeTapped) }) {
-                        Label("スクリーンショットモード", systemImage: "camera")
-                    }
-                }
-                
-                Section("クラッシュテスト") {
-                    Button(role: .destructive, action: { store.send(.forceCrashTapped) }) {
-                        Label("強制クラッシュ", systemImage: "exclamationmark.triangle")
-                            .foregroundColor(.red)
-                    }
-                }
-                
-                Section("アプリ情報") {
-                    HStack {
-                        Text("Bundle ID")
-                        Spacer()
-                        Text(Bundle.main.bundleIdentifier ?? "Unknown")
-                            .foregroundColor(.secondary)
-                            .font(.caption)
-                    }
-                    
-                    HStack {
-                        Text("環境")
-                        Spacer()
-                        Text("Debug")
-                            .foregroundColor(.orange)
-                            .font(.caption)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 2)
-                            .background(Color.orange.opacity(0.2))
-                            .cornerRadius(4)
-                    }
-                }
+            usageLimitSection
+            dataManagementSection
+            purchaseTestSection
+            screenshotSection
+            crashTestSection
+            appInfoSection
+        }
+        .navigationTitle("デバッグメニュー")
+        .navigationBarTitleDisplayMode(.inline)
+        .alert("リセット確認", isPresented: $store.showingResetConfirmation.sending(\.setShowingResetConfirmation)) {
+            Button("キャンセル", role: .cancel) {
+                store.send(.cancelReset)
             }
-            .navigationTitle("デバッグメニュー")
-            .navigationBarTitleDisplayMode(.inline)
-            .alert("リセット確認", isPresented: $store.showingResetConfirmation.sending(\.setShowingResetConfirmation)) {
-                Button("キャンセル", role: .cancel) {
-                    store.send(.cancelReset)
-                }
-                Button("リセット", role: .destructive) {
-                    store.send(.confirmReset)
-                }
-            } message: {
-                Text("すべてのタスクと設定がリセットされます。この操作は取り消せません。")
+            Button("リセット", role: .destructive) {
+                store.send(.confirmReset)
             }
-            .alert("デバッグ", isPresented: $store.showingAlert.sending(\.setAlert)) {
-                Button("OK") {
-                    store.send(.setAlert(false, ""))
-                }
-            } message: {
-                Text(store.alertMessage)
+        } message: {
+            Text("すべてのタスクと設定がリセットされます。この操作は取り消せません。")
+        }
+        .alert("デバッグ", isPresented: $store.showingAlert.sending(\.setAlert)) {
+            Button("OK") {
+                store.send(.setAlert(false, ""))
             }
-            .fullScreenCover(isPresented: $store.showingScreenshotView.sending(\.setShowingScreenshotView)) {
-                ScreenshotView()
-            }
+        } message: {
+            Text(store.alertMessage)
+        }
+        .fullScreenCover(isPresented: $store.showingScreenshotView.sending(\.setShowingScreenshotView)) {
+            ScreenshotView()
         }
     }
+    
     
     @ViewBuilder
     private var usageLimitRow: some View {
@@ -200,6 +143,82 @@ struct DebugMenuView: View {
             let limitText = usageLimitClient.hasReachedLimit() ? "∞" : "3"
             Text("\(currentCount) / \(limitText)")
                 .foregroundColor(.secondary)
+        }
+    }
+    
+    private var usageLimitSection: some View {
+        Section("使用制限") {
+            usageLimitRow
+            
+            Button(action: { store.send(.resetUsageLimitTapped) }) {
+                Label("使用回数をリセット", systemImage: "arrow.counterclockwise")
+            }
+            
+            Button(action: { store.send(.toggleUnlimitedUsage) }) {
+                Label("無制限モードを切り替え", systemImage: "infinity")
+            }
+        }
+    }
+    
+    private var dataManagementSection: some View {
+        Section("データ管理") {
+            Button(role: .destructive, action: { store.send(.resetAllDataTapped) }) {
+                Label("すべてのデータをリセット", systemImage: "trash")
+                    .foregroundColor(.red)
+            }
+        }
+    }
+    
+    private var purchaseTestSection: some View {
+        Section("課金テスト") {
+            Button(action: testPurchase) {
+                Label("テスト購入を実行", systemImage: "creditcard")
+            }
+            
+            Button(action: testRestore) {
+                Label("購入の復元をテスト", systemImage: "arrow.clockwise")
+            }
+        }
+    }
+    
+    private var screenshotSection: some View {
+        Section("スクリーンショット") {
+            Button(action: { store.send(.screenshotModeTapped) }) {
+                Label("スクリーンショットモード", systemImage: "camera")
+            }
+        }
+    }
+    
+    private var crashTestSection: some View {
+        Section("クラッシュテスト") {
+            Button(role: .destructive, action: { store.send(.forceCrashTapped) }) {
+                Label("強制クラッシュ", systemImage: "exclamationmark.triangle")
+                    .foregroundColor(.red)
+            }
+        }
+    }
+    
+    private var appInfoSection: some View {
+        Section("アプリ情報") {
+            HStack {
+                Text("Bundle ID")
+                Spacer()
+                Text(Bundle.main.bundleIdentifier ?? "Unknown")
+                    .foregroundColor(.secondary)
+                    .font(.caption)
+            }
+            
+            HStack {
+                Text("環境")
+                Spacer()
+                Text("Debug")
+                    .foregroundColor(.orange)
+                    .font(.caption)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 2)
+                    .background(Color.orange.opacity(0.2))
+                    .cornerRadius(4)
+            }
         }
     }
     
