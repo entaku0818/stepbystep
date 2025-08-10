@@ -674,11 +674,6 @@ struct SubscriptionScreenshotView: View {
                             description: "集中を妨げる広告を完全に除去"
                         )
                         
-                        FeatureRowScreenshot(
-                            icon: "star.fill",
-                            title: "優先サポート",
-                            description: "お問い合わせに優先的に対応"
-                        )
                     }
                     .padding()
                     .background(Color.indigo.opacity(0.1))

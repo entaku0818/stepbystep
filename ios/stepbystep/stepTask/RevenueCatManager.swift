@@ -22,17 +22,11 @@ enum SubscriptionType: String, CaseIterable {
         }
     }
     
-    var price: String {
-        return "¥500/月"
-    }
-    
     var features: [String] {
         return [
             "無制限のタスク分割",
             "ステップを子タスクに分割",
             "広告なし体験",
-            "優先サポート",
-            "今後追加される全ての機能"
         ]
     }
 }
@@ -87,10 +81,19 @@ class RevenueCatManager: NSObject, ObservableObject {
         }
     }
     
+    /// 価格情報を取得
+    func getPriceString() async -> String? {
+        guard let offerings = offerings,
+              let package = offerings.current?.availablePackages.first else {
+            return nil
+        }
+        return package.localizedPriceString
+    }
+    
     /// 購入処理
     func purchase(_ productType: SubscriptionType) async throws {
         guard let offerings = offerings,
-              let package = offerings.current?.package(identifier: productType.rawValue) else {
+              let package = offerings.current?.availablePackages.first else {
             throw PurchaseError.productNotFound
         }
         

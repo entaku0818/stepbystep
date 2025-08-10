@@ -21,11 +21,14 @@ struct SubscriptionReducer {
         var errorMessage: String?
         var showSuccessAlert = false
         var selectedSubscription: SubscriptionType = .monthly
+        var price: String?
+        var isLoadingPrice = false
     }
     
     enum Action {
         case onAppear
         case proStatusUpdated(Bool)
+        case priceUpdated(String?)
         case purchaseButtonTapped
         case purchaseCompleted(Bool)
         case purchaseFailed(String)
@@ -43,14 +46,25 @@ struct SubscriptionReducer {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                state.isLoadingPrice = true
                 return .run { send in
                     await revenueCatClient.checkSubscriptionStatus()
                     let isProUser = await revenueCatClient.isProUser()
                     await send(.proStatusUpdated(isProUser))
+                    
+                    // 価格情報を取得
+                    // TODO: RevenueCatから実際の価格を取得
+                    // 現在は仮の価格を設定
+                    await send(.priceUpdated("¥650"))
                 }
                 
             case let .proStatusUpdated(isPro):
                 state.isProUser = isPro
+                return .none
+                
+            case let .priceUpdated(price):
+                state.price = price
+                state.isLoadingPrice = false
                 return .none
                 
             case .purchaseButtonTapped:
@@ -246,10 +260,17 @@ struct SubscriptionView: View {
                 Text("月額プラン")
                     .font(.headline)
                 
-                Text("¥500")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.blue)
+                // RevenueCatから取得した価格を表示
+                if let price = store.price {
+                    Text(price)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                } else {
+                    Text("読み込み中...")
+                        .font(.largeTitle)
+                        .foregroundColor(.gray)
+                }
                 
                 Text("/ 月")
                     .font(.body)

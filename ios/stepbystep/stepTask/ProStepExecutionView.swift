@@ -478,7 +478,6 @@ struct ProUpgradePromptView: View {
                     FeatureRow(icon: "square.split.2x1", text: "ステップを子タスクに分割")
                     FeatureRow(icon: "infinity", text: "無制限のタスク分割")
                     FeatureRow(icon: "play.slash", text: "広告なし")
-                    FeatureRow(icon: "star.fill", text: "優先サポート")
                 }
                 .padding()
                 .background(Color.blue.opacity(0.1))
