@@ -11,6 +11,7 @@
 		61739BB92E10F4790002A651 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 61739BB82E10F4790002A651 /* ComposableArchitecture */; };
 		61739BBC2E10F5BB0002A651 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 61739BBB2E10F5BB0002A651 /* FirebaseAnalytics */; };
 		618E59D62E24008C00219804 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 618E59D52E24008C00219804 /* GoogleMobileAds */; };
+		61E139BC2E4897B1007A5AD0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61E139BB2E4897B1007A5AD0 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		61739A2A2E10D7B30002A651 /* TaskSteps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskSteps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61739A372E10D7B50002A651 /* TaskStepsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskStepsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskStepsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		61E139BB2E4897B1007A5AD0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -61,6 +63,7 @@
 			files = (
 				61701A5D2E350B63004A411A /* RevenueCat in Frameworks */,
 				618E59D62E24008C00219804 /* GoogleMobileAds in Frameworks */,
+				61E139BC2E4897B1007A5AD0 /* StoreKit.framework in Frameworks */,
 				61739BBC2E10F5BB0002A651 /* FirebaseAnalytics in Frameworks */,
 				61739BB92E10F4790002A651 /* ComposableArchitecture in Frameworks */,
 			);
@@ -89,6 +92,7 @@
 				61739B272E10EB8A0002A651 /* stepTask */,
 				61739B2C2E10EB8E0002A651 /* stepTaskTests */,
 				61739B302E10EB920002A651 /* stepTaskUITests */,
+				61E139BA2E4897B1007A5AD0 /* Frameworks */,
 				61739A2B2E10D7B30002A651 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +105,14 @@
 				61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		61E139BA2E4897B1007A5AD0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				61E139BB2E4897B1007A5AD0 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
