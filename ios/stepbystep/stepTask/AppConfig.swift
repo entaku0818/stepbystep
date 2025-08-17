@@ -30,10 +30,11 @@ enum AppConfig {
     
     // Firebase Functions設定
     static var firebaseFunctionsUrl: String {
-        guard let url = Bundle.main.object(forInfoDictionaryKey: "FirebaseFunctionsURL") as? String else {
-            fatalError("FirebaseFunctionsURL not found in Info.plist")
-        }
-        return url
+        #if DEBUG
+        return "https://us-central1-stepbystep-tasks.cloudfunctions.net"
+        #else
+        return "https://us-central1-stepbystep-tasks.cloudfunctions.net"
+        #endif
     }
     
     // API環境設定
