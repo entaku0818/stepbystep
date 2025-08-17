@@ -389,6 +389,7 @@ struct TaskInputView: View {
                 // Pro会員チェックして適切な画面を表示
                 ProAwareStepExecutionView(
                     steps: store.steps,
+                    currentTask: store.currentTask,
                     onTaskCompleted: {
                         store.send(.dismissSteps)
                     }
@@ -992,6 +993,7 @@ struct ConfettiItem {
 
 struct ProAwareStepExecutionView: View {
     let steps: [String]
+    let currentTask: PersistedTask?
     let onTaskCompleted: () -> Void
     @Dependency(\.revenueCatClient) var revenueCatClient
     @State private var isProUser: Bool = false
@@ -1003,7 +1005,8 @@ struct ProAwareStepExecutionView: View {
                 ProStepExecutionView(
                     store: Store(
                         initialState: ProStepExecutionReducer.State(
-                            steps: steps.map { ProStepExecutionReducer.State.StepItem(content: $0) }
+                            steps: steps.map { ProStepExecutionReducer.State.StepItem(content: $0) },
+                            currentTask: currentTask
                         )
                     ) {
                         ProStepExecutionReducer()

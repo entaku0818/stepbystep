@@ -25,6 +25,7 @@ struct ProStepExecutionReducer {
         var isSplittingStep = false
         var splitError: String?
         var showProUpgrade = false
+        var currentTask: PersistedTask?
         
         struct StepItem: Equatable, Identifiable {
             let id = UUID()
@@ -72,10 +73,13 @@ struct ProStepExecutionReducer {
         case dismissCompletionAlert
         case showProUpgrade
         case dismissProUpgrade
+        case saveTaskProgress
+        case onAppear
     }
     
     @Dependency(\.taskSplitterClient) var taskSplitterClient
     @Dependency(\.revenueCatClient) var revenueCatClient
+    @Dependency(\.taskStorageClient) var taskStorageClient
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -107,7 +111,8 @@ struct ProStepExecutionReducer {
                     return .send(.completeTask)
                 }
                 
-                return .none
+                // タスクの進捗を保存
+                return .send(.saveTaskProgress)
                 
             case let .splitStep(step):
                 // Pro会員チェック
@@ -174,6 +179,65 @@ struct ProStepExecutionReducer {
             case .dismissProUpgrade:
                 state.showProUpgrade = false
                 return .none
+                
+            case .saveTaskProgress:
+                // タスクの進捗を保存
+                guard var task = state.currentTask else { return .none }
+                
+                // StepItemからTaskStepに変換して保存
+                task.steps = state.steps.map { stepItem in
+                    var taskStep = TaskStep(
+                        content: stepItem.content,
+                        isCompleted: stepItem.isCompleted,
+                        subSteps: stepItem.subSteps.map { subItem in
+                            TaskStep(
+                                content: subItem.content,
+                                isCompleted: subItem.isCompleted,
+                                depth: 1,
+                                parentId: stepItem.id
+                            )
+                        },
+                        depth: 0,
+                        parentId: nil
+                    )
+                    if stepItem.isCompleted {
+                        taskStep.setCompleted(true)
+                    }
+                    return taskStep
+                }
+                
+                // タスクが完了していれば完了日時を設定
+                if task.isCompleted {
+                    task.completedAt = Date()
+                }
+                
+                return .run { [task] send in
+                    do {
+                        // 現在のタスクを保存
+                        try await taskStorageClient.saveCurrentTask(task)
+                        
+                        // タスク履歴も更新
+                        var tasks = try await taskStorageClient.loadTasks()
+                        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+                            tasks[index] = task
+                            try await taskStorageClient.saveTasks(tasks)
+                        }
+                    } catch {
+                        print("Failed to save task progress: \(error)")
+                    }
+                }
+                
+            case .onAppear:
+                // 現在のタスクを読み込む
+                return .run { send in
+                    do {
+                        if let task = try await taskStorageClient.loadCurrentTask() {
+                            // タスクが読み込まれた場合の処理はViewで行う
+                        }
+                    } catch {
+                        print("Failed to load current task: \(error)")
+                    }
+                }
             }
         }
     }
@@ -221,6 +285,9 @@ struct ProStepExecutionView: View {
             }
             .navigationTitle("ステップ実行")
             .navigationBarBackButtonHidden(true)
+            .onAppear {
+                store.send(.onAppear)
+            }
             
             // Completion Animation
             if store.showCompletionAnimation {

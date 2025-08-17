@@ -50,15 +50,24 @@ class RevenueCatManager: NSObject, ObservableObject {
     func configure() {
         #if DEBUG
         Purchases.logLevel = .debug
+        print("🔵 [RevenueCat] Configuring with API key: \(AppConfig.revenueCatApiKey.prefix(10))...")
         #endif
         
-        Purchases.configure(withAPIKey: AppConfig.revenueCatApiKey)
+        // APIキーの検証
+        let apiKey = AppConfig.revenueCatApiKey
         
-        // デリゲートを設定
-        Purchases.shared.delegate = self
-        
-        // 購入者情報を取得
-        checkSubscriptionStatus()
+        do {
+            Purchases.configure(withAPIKey: apiKey)
+            
+            // デリゲートを設定
+            Purchases.shared.delegate = self
+            
+            // 購入者情報を取得
+            checkSubscriptionStatus()
+        } catch {
+            print("❌ [RevenueCat] Failed to configure: \(error)")
+            self.error = "RevenueCat初期化エラー: \(error.localizedDescription)"
+        }
     }
     
     /// サブスクリプション状態をチェック
