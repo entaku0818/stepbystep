@@ -53,15 +53,15 @@ extension UsageLimitClient {
 extension UsageLimitClient {
     static let test = Self(
         currentUsageCount: { 0 },
-        remainingUsage: { 3 },
+        remainingUsage: { 5 },
         hasReachedLimit: { false },
         incrementUsage: { },
-        getLimitMessage: { "テスト用: 残り使用回数 3回" },
+        getLimitMessage: { "テスト用: 残り使用回数 5回" },
         setUnlimited: { _ in },
         resetUsageForDebug: { }
     )
     
-    static func testLimited(current: Int = 3, limit: Int = 3) -> Self {
+    static func testLimited(current: Int = 0, limit: Int = 5) -> Self {
         var count = current
         let isUnlimited = false
         

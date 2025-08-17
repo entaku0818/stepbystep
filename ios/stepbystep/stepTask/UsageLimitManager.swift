@@ -9,7 +9,7 @@ final class UsageLimitManager {
     static let shared = UsageLimitManager()
     
     private let userDefaults = UserDefaults.standard
-    private let dailyLimit = 3
+    private let dailyLimit = 5
     private var isUnlimited = false
     
     // UserDefaults Keys

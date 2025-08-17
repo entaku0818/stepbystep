@@ -21,9 +21,10 @@ struct TaskInputReducer {
         var currentTask: PersistedTask?
         var savedTasks: [PersistedTask] = []
         var showUsageLimitAlert: Bool = false
-        var remainingUsage: Int = 3
+        var remainingUsage: Int = 5
         var isShowingAd: Bool = false
         var adLoadingMessage: String?
+        var showAdWarningAlert: Bool = false
         
         var isValid: Bool {
             taskTitle.count >= 5 && taskTitle.count <= 100
@@ -63,6 +64,9 @@ struct TaskInputReducer {
         case adShown(Bool)
         case adLoadingStarted
         case adLoadingCompleted
+        case showAdWarning
+        case confirmAdShow
+        case cancelAdShow
     }
     
     @Dependency(\.taskSplitterClient) var taskSplitterClient
@@ -122,8 +126,9 @@ struct TaskInputReducer {
                     return .none
                 }
                 
-                // 広告を表示してからタスク分割を行う
-                return .send(.showAdBeforeTaskSplit)
+                // 広告表示の警告アラートを表示
+                state.showAdWarningAlert = true
+                return .none
                 
             case .showAdBeforeTaskSplit:
                 state.isLoading = true
@@ -251,6 +256,19 @@ struct TaskInputReducer {
                 
             case .dismissUsageLimitAlert:
                 state.showUsageLimitAlert = false
+                return .none
+                
+            case .showAdWarning:
+                state.showAdWarningAlert = true
+                return .none
+                
+            case .confirmAdShow:
+                state.showAdWarningAlert = false
+                // 広告を表示してからタスク分割を行う
+                return .send(.showAdBeforeTaskSplit)
+                
+            case .cancelAdShow:
+                state.showAdWarningAlert = false
                 return .none
             }
         }
@@ -385,6 +403,16 @@ struct TaskInputView: View {
                 }
             } message: {
                 Text(usageLimitClient.getLimitMessage())
+            }
+            .alert("広告が表示されます", isPresented: Binding(
+                get: { store.showAdWarningAlert },
+                set: { _ in }
+            )) {
+                Button("OK") {
+                    store.send(.confirmAdShow)
+                }
+            } message: {
+                Text("タスク分割の前に短い広告が表示されます。")
             }
         }
     }
