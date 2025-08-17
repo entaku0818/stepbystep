@@ -109,8 +109,8 @@ struct ScreenshotView: View {
                 SubscriptionScreenshotView()
             }
         }
+    }
 }
-
 // MARK: - Task Input Screenshot
 
 struct TaskInputScreenshotView: View {
