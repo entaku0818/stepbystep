@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - Screenshot View
 
 struct ScreenshotView: View {
-    @State private var selectedScreen: ScreenshotType = .taskInput
+    @State private var currentIndex: Int = 0
     @Environment(\.dismiss) var dismiss
     
     enum ScreenshotType: String, CaseIterable {
@@ -32,90 +32,83 @@ struct ScreenshotView: View {
         }
     }
     
+    private let screens = ScreenshotType.allCases
+    
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                // Header
-                HStack {
-                    Button("閉じる") {
-                        dismiss()
-                    }
-                    Spacer()
-                    Text("スクリーンショットモード")
-                        .font(.headline)
-                    Spacer()
-                    Text("5.5\"用")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+        ZStack {
+            // 背景を白に
+            Color.white
+                .ignoresSafeArea()
+            
+            // TabViewでスワイプ可能にする
+            TabView(selection: $currentIndex) {
+                ForEach(0..<screens.count, id: \.self) { index in
+                    screenView(for: screens[index])
+                        .tag(index)
                 }
-                .padding()
-                .background(Color(UIColor.systemBackground))
-                
-                // Screen Selector
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(ScreenshotType.allCases, id: \.self) { type in
-                            Button(action: { selectedScreen = type }) {
-                                VStack(spacing: 4) {
-                                    Text(type.rawValue)
-                                        .font(.caption)
-                                        .fontWeight(selectedScreen == type ? .bold : .regular)
-                                    
-                                    if selectedScreen == type {
-                                        RoundedRectangle(cornerRadius: 2)
-                                            .fill(Color.blue)
-                                            .frame(height: 3)
-                                    } else {
-                                        Color.clear.frame(height: 3)
-                                    }
-                                }
-                                .foregroundColor(selectedScreen == type ? .blue : .secondary)
-                            }
-                            .buttonStyle(PlainButtonStyle())
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            .ignoresSafeArea()
+            
+            // 右上に小さくインジケーターと閉じるボタン
+            VStack {
+                HStack {
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 8) {
+                        // 現在のページ表示
+                        Text("\(currentIndex + 1) / \(screens.count)")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.white.opacity(0.9))
+                            .cornerRadius(8)
+                        
+                        // 閉じるボタン
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(.gray)
+                                .background(Color.white)
+                                .clipShape(Circle())
                         }
                     }
-                    .padding(.horizontal)
+                    .padding()
                 }
-                .padding(.vertical, 8)
-                .background(Color(UIColor.secondarySystemBackground))
-                
-                // Preview Area
-                GeometryReader { geometry in
-                    ZStack {
-                        // Background
-                        Color(UIColor.systemGroupedBackground)
-                        
-                        // Content
-                        selectedScreenView
-                            .frame(width: 428, height: 926) // iPhone 14 Pro Max size
-                            .scaleEffect(min(geometry.size.width / 428, geometry.size.height / 926))
-                            .background(Color.white)
-                            .cornerRadius(20)
-                            .shadow(radius: 10)
-                    }
-                }
+                Spacer()
             }
         }
         .preferredColorScheme(.light) // Force light mode for screenshots
-    }
-    
-    @ViewBuilder
-    var selectedScreenView: some View {
-        switch selectedScreen {
-        case .taskInput:
-            TaskInputScreenshotView()
-        case .taskSplitting:
-            TaskSplittingScreenshotView()
-        case .stepExecution:
-            StepExecutionScreenshotView()
-        case .completion:
-            CompletionScreenshotView()
-        case .history:
-            HistoryScreenshotView()
-        case .subscription:
-            SubscriptionScreenshotView()
+        .statusBar(hidden: true) // ステータスバーを非表示
+        .onChange(of: currentIndex) { oldValue, newValue in
+            // 最後のスクリーンの後でスワイプしたら終了
+            if newValue >= screens.count {
+                dismiss()
+            }
         }
     }
+    
+    // 各スクリーンのビューを返す
+    private func screenView(for type: ScreenshotType) -> some View {
+        Group {
+            switch type {
+            case .taskInput:
+                TaskInputScreenshotView()
+            case .taskSplitting:
+                TaskSplittingScreenshotView()
+            case .stepExecution:
+                StepExecutionScreenshotView()
+            case .completion:
+                CompletionScreenshotView()
+            case .history:
+                HistoryScreenshotView()
+            case .subscription:
+                SubscriptionScreenshotView()
+            }
+        }
 }
 
 // MARK: - Task Input Screenshot
