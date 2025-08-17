@@ -522,7 +522,7 @@ struct SubStepRowView: View {
 // MARK: - Pro Upgrade Prompt View
 
 struct ProUpgradePromptView: View {
-    @Dependency(\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -568,9 +568,7 @@ struct ProUpgradePromptView: View {
                 .padding(.horizontal)
                 
                 Button("後で") {
-                    Task { @MainActor in
-                        await dismiss()
-                    }
+                    dismiss()
                 }
                 .foregroundColor(.gray)
                 .padding(.bottom)

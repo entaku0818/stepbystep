@@ -41,6 +41,7 @@ struct SubscriptionReducer {
     
     @Dependency(\.revenueCatClient) var revenueCatClient
     @Dependency(\.dismiss) var dismiss
+    @Dependency(\.isPresented) var isPresented
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -131,8 +132,13 @@ struct SubscriptionReducer {
                 
             case .dismissSuccessAlert:
                 state.showSuccessAlert = false
-                return .run { _ in
-                    await self.dismiss()
+                // ビューが表示されている場合のみdismiss
+                if isPresented {
+                    return .run { _ in
+                        await self.dismiss()
+                    }
+                } else {
+                    return .none
                 }
             }
         }
