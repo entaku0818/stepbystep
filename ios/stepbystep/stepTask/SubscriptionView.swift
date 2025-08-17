@@ -53,10 +53,13 @@ struct SubscriptionReducer {
                     let isProUser = await revenueCatClient.isProUser()
                     await send(.proStatusUpdated(isProUser))
                     
-                    // 価格情報を取得
-                    // TODO: RevenueCatから実際の価格を取得
-                    // 現在は仮の価格を設定
-                    await send(.priceUpdated("¥650"))
+                    // RevenueCatから価格情報を取得
+                    if let priceString = await RevenueCatManager.shared.getPriceString() {
+                        await send(.priceUpdated(priceString))
+                    } else {
+                        // 価格が取得できない場合のフォールバック
+                        await send(.priceUpdated(nil))
+                    }
                 }
                 
             case let .proStatusUpdated(isPro):

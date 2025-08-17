@@ -81,10 +81,15 @@ class RevenueCatManager: NSObject, ObservableObject {
                 let offerings = try await Purchases.shared.offerings()
                 await MainActor.run {
                     self.offerings = offerings
+                    print("🔵 [RevenueCat] Offerings loaded: \(offerings.current?.availablePackages.count ?? 0) packages")
+                    if let firstPackage = offerings.current?.availablePackages.first {
+                        print("🔵 [RevenueCat] First package price: \(firstPackage.localizedPriceString)")
+                    }
                 }
             } catch {
                 await MainActor.run {
                     self.error = "サブスクリプション情報の取得に失敗しました: \(error.localizedDescription)"
+                    print("❌ [RevenueCat] Failed to load offerings: \(error)")
                 }
             }
         }
@@ -94,9 +99,12 @@ class RevenueCatManager: NSObject, ObservableObject {
     func getPriceString() async -> String? {
         guard let offerings = offerings,
               let package = offerings.current?.availablePackages.first else {
+            print("⚠️ [RevenueCat] No offerings or packages available")
             return nil
         }
-        return package.localizedPriceString
+        let priceString = package.localizedPriceString
+        print("✅ [RevenueCat] Price retrieved: \(priceString)")
+        return priceString
     }
     
     /// 購入処理
