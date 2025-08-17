@@ -292,8 +292,8 @@ struct ProStepExecutionView: View {
             // Completion Animation
             if store.showCompletionAnimation {
                 CompletionAnimationView(
-                    animateSuccessIcon: .constant(true),
                     animateConfetti: .constant(true),
+                    animateSuccessIcon: .constant(true),
                     animationScale: .constant(1.0)
                 )
                 .transition(.opacity)

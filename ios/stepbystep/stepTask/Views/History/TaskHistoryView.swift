@@ -497,11 +497,9 @@ struct StepExecutionViewFromHistory: View {
     }
     
     var body: some View {
-        StepExecutionViewWithState(
+        StepExecutionView(
             steps: updatedTask.steps.map { $0.content },
-            initialCompletedSteps: Set(updatedTask.steps.enumerated().compactMap { index, step in
-                step.isCompleted ? index : nil
-            }),
+            taskTitle: updatedTask.title,
             onTaskCompleted: {
                 // タスクを完了としてマーク
                 Task {
@@ -525,25 +523,6 @@ struct StepExecutionViewFromHistory: View {
                     }
                 }
                 onTaskCompleted()
-            },
-            onStepCompleted: { stepIndex in
-                // ステップ完了時の処理
-                Task {
-                    do {
-                        updatedTask.steps[stepIndex].isCompleted = true
-                        updatedTask.steps[stepIndex].completedAt = Date()
-                        
-                        // 進行状況を保存
-                        try await taskStorageClient.saveCurrentTask(updatedTask)
-                        var tasks = try await taskStorageClient.loadTasks()
-                        if let index = tasks.firstIndex(where: { $0.id == updatedTask.id }) {
-                            tasks[index] = updatedTask
-                            try await taskStorageClient.saveTasks(tasks)
-                        }
-                    } catch {
-                        print("Failed to update step: \(error)")
-                    }
-                }
             }
         )
     }
