@@ -334,7 +334,10 @@ struct CurrentStepCard: View {
             Text(step.content)
                 .font(.title3)
                 .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding()
+                .frame(maxWidth: .infinity)
                 .background(Color.blue.opacity(0.1))
                 .cornerRadius(12)
             

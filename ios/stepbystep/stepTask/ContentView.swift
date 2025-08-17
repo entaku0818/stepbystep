@@ -423,6 +423,7 @@ struct TaskInputView: View {
 
 struct StepExecutionView: View {
     let steps: [String]
+    let taskTitle: String = ""
     let onTaskCompleted: () -> Void
     
     @State private var currentStepIndex: Int = 0
@@ -445,6 +446,15 @@ struct StepExecutionView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 24) {
+                // Task title display
+                if !taskTitle.isEmpty {
+                    Text(taskTitle)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
+                
                 // Progress indicator
                 VStack(alignment: .leading, spacing: 8) {
                     Text("進捗: \(completedSteps.count)/\(steps.count)")
@@ -467,7 +477,10 @@ struct StepExecutionView: View {
                     Text(step)
                         .font(.title3)
                         .multilineTextAlignment(.center)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
                         .padding()
+                        .frame(maxWidth: .infinity)
                         .background(Color.blue.opacity(0.1))
                         .cornerRadius(12)
                     
@@ -704,7 +717,10 @@ struct StepExecutionViewWithState: View {
                     Text(step)
                         .font(.title3)
                         .multilineTextAlignment(.center)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
                         .padding()
+                        .frame(maxWidth: .infinity)
                         .background(Color.blue.opacity(0.1))
                         .cornerRadius(12)
                     
@@ -995,6 +1011,10 @@ struct ProAwareStepExecutionView: View {
     let steps: [String]
     let currentTask: PersistedTask?
     let onTaskCompleted: () -> Void
+    
+    var taskTitle: String {
+        currentTask?.title ?? "タスク"
+    }
     @Dependency(\.revenueCatClient) var revenueCatClient
     @State private var isProUser: Bool = false
     
@@ -1017,6 +1037,7 @@ struct ProAwareStepExecutionView: View {
                 // 通常の画面
                 StepExecutionView(
                     steps: steps,
+                    taskTitle: taskTitle,
                     onTaskCompleted: onTaskCompleted
                 )
             }
