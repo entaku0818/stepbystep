@@ -14,6 +14,7 @@ struct TaskInputReducer {
         var currentTask: PersistedTask?
         var savedTasks: [PersistedTask] = []
         var showUsageLimitAlert: Bool = false
+        var showProUpgradePrompt: Bool = false
         var remainingUsage: Int = 5
         var isShowingAd: Bool = false
         var adLoadingMessage: String?
@@ -51,6 +52,8 @@ struct TaskInputReducer {
         // 使用制限関連のアクション
         case updateRemainingUsage
         case dismissUsageLimitAlert
+        case showProUpgradePrompt
+        case dismissProUpgradePrompt
         
         // 広告関連のアクション
         case showAdBeforeTaskSplit
@@ -115,7 +118,8 @@ struct TaskInputReducer {
                 
                 // 使用制限チェック
                 if usageLimitClient.hasReachedLimit() {
-                    state.showUsageLimitAlert = true
+                    // 5回使用後は課金画面を表示
+                    state.showProUpgradePrompt = true
                     return .none
                 }
                 
@@ -249,6 +253,14 @@ struct TaskInputReducer {
                 
             case .dismissUsageLimitAlert:
                 state.showUsageLimitAlert = false
+                return .none
+                
+            case .showProUpgradePrompt:
+                state.showProUpgradePrompt = true
+                return .none
+                
+            case .dismissProUpgradePrompt:
+                state.showProUpgradePrompt = false
                 return .none
                 
             case .showAdWarning:
