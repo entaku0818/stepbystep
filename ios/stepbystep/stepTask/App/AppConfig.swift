@@ -52,4 +52,17 @@ enum AppConfig {
         }
         return key
     }
+    
+    // StepByStep API設定
+    static var stepByStepApiKey: String {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "StepByStepAPIKey") as? String else {
+            #if DEBUG
+            // デバッグ時はデフォルトキーを使用
+            return "stepbystep-dev-key-2024"
+            #else
+            fatalError("StepByStepAPIKey not found in Info.plist")
+            #endif
+        }
+        return key
+    }
 }

@@ -121,6 +121,7 @@ async function splitTaskIntoStepsMock(task: string): Promise<string[]> {
   return steps;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 /**
  * 将来の拡張用（OpenAI API等）
  * @param {string} task - 分割するタスク（現在未使用）
@@ -128,6 +129,5 @@ async function splitTaskIntoStepsMock(task: string): Promise<string[]> {
  */
 export async function splitTaskWithOpenAI(task: string): Promise<string[]> {
   // OpenAI API実装予定地
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   throw new Error("OpenAI API integration not implemented yet");
 }

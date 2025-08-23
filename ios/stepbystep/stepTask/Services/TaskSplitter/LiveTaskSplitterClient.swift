@@ -37,6 +37,7 @@ class LiveTaskSplitterClient: TaskSplitterClient {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(AppConfig.stepByStepApiKey, forHTTPHeaderField: "X-API-Key")
         
         let requestBody = TaskSplitRequest(task: task)
         do {

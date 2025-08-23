@@ -1,15 +1,28 @@
 import * as functions from "firebase-functions";
+import {defineSecret} from "firebase-functions/params";
 import {splitTaskIntoSteps} from "./taskSplitter";
 
-export const splitTask = functions.https.onRequest(
-  async (request, response) => {
+// Secret Manager からAPIキーを取得
+const apiKeySecret = defineSecret("STEPBYSTEP_API_KEY");
+
+// フォールバック用のデフォルトキー
+const DEFAULT_API_KEY = "stepbystep-dev-key-2024";
+
+export const splitTask = functions
+  .runWith({
+    secrets: [apiKeySecret],
+  })
+  .https.onRequest(async (request, response) => {
     console.log("splitTask called");
 
     try {
       // CORS headers
       response.set("Access-Control-Allow-Origin", "*");
       response.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-      response.set("Access-Control-Allow-Headers", "Content-Type");
+      response.set(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, X-API-Key"
+      );
 
       // Handle preflight OPTIONS request
       if (request.method === "OPTIONS") {
@@ -20,6 +33,20 @@ export const splitTask = functions.https.onRequest(
       // Only allow POST requests
       if (request.method !== "POST") {
         response.status(405).json({error: "Method not allowed"});
+        return;
+      }
+
+      // API キー認証
+      const validApiKey = apiKeySecret.value() || DEFAULT_API_KEY;
+      const clientApiKey = request.headers["x-api-key"] ||
+        request.headers["authorization"];
+
+      if (!clientApiKey || clientApiKey !== validApiKey) {
+        console.log("Invalid or missing API key:", clientApiKey);
+        response.status(401).json({
+          error: "Unauthorized",
+          message: "Valid API key is required",
+        });
         return;
       }
 
@@ -50,8 +77,8 @@ export const splitTask = functions.https.onRequest(
       console.error("Error in splitTask:", error);
       response.status(500).json({
         error: "Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error",
+        message: error instanceof Error ?
+          error.message : "Unknown error",
       });
     }
-  }
-);
+  });
