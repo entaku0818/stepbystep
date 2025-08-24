@@ -22,41 +22,9 @@ struct TaskInputView: View {
                 headerSection
                 taskInputSection
                 
-                Button(action: {
-                    store.send(.saveButtonTapped)
-                }) {
-                    HStack {
-                        if store.isLoading {
-                            ProgressView()
-                                .scaleEffect(0.8)
-                        }
-                        Text(loadingText(store: store))
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(buttonBackgroundColor(store: store))
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-                .disabled(!store.isValid || store.isLoading || store.currentTask != nil)
-                
-                if store.currentTask != nil {
-                    Text("現在進行中のタスクを完了してから新しいタスクを追加してください")
-                        .font(.caption)
-                        .foregroundColor(.orange)
-                        .padding()
-                        .background(Color.orange.opacity(0.1))
-                        .cornerRadius(8)
-                }
-                
-                if let errorMessage = store.errorMessage {
-                    Text(errorMessage)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding()
-                        .background(Color.red.opacity(0.1))
-                        .cornerRadius(8)
-                }
+                saveButton
+                warningMessage
+                errorMessage
                 
                 Spacer()
             }
@@ -82,12 +50,7 @@ struct TaskInputView: View {
                 get: { store.showProUpgradePrompt },
                 set: { _ in store.send(.dismissProUpgradePrompt) }
             )) {
-                ProUpgradePromptView(
-                    onDismiss: {
-                        store.send(.dismissProUpgradePrompt)
-                    },
-                    message: "無料利用回数（5回）を使い切りました。タスク分割機能を継続してご利用いただくには、プレミアムプランへのアップグレードが必要です。"
-                )
+                ProUpgradePromptView()
             }
             .alert("広告が表示されます", isPresented: Binding(
                 get: { store.showAdWarningAlert },
@@ -169,6 +132,50 @@ struct TaskInputView: View {
                     .padding(.vertical, 12)
                     .allowsHitTesting(false)
             }
+        }
+    }
+    
+    private var saveButton: some View {
+        Button(action: {
+            store.send(.saveButtonTapped)
+        }) {
+            HStack {
+                if store.isLoading {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                }
+                Text(loadingText(store: store))
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(buttonBackgroundColor(store: store))
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        .disabled(!store.isValid || store.isLoading || store.currentTask != nil)
+    }
+    
+    @ViewBuilder
+    private var warningMessage: some View {
+        if store.currentTask != nil {
+            Text("現在進行中のタスクを完了してから新しいタスクを追加してください")
+                .font(.caption)
+                .foregroundColor(.orange)
+                .padding()
+                .background(Color.orange.opacity(0.1))
+                .cornerRadius(8)
+        }
+    }
+    
+    @ViewBuilder
+    private var errorMessage: some View {
+        if let errorMessage = store.errorMessage {
+            Text(errorMessage)
+                .font(.caption)
+                .foregroundColor(.red)
+                .padding()
+                .background(Color.red.opacity(0.1))
+                .cornerRadius(8)
         }
     }
     
