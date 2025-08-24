@@ -132,7 +132,7 @@ struct TaskHistoryView: View {
             } message: {
                 Text(store.errorMessage ?? "")
             }
-            .sheet(isPresented: Binding(
+            .navigationDestination(isPresented: Binding(
                 get: { store.showTaskDetail },
                 set: { _ in store.send(.deselectTask) }
             )) {

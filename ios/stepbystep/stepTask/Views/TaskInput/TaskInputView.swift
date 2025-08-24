@@ -46,7 +46,7 @@ struct TaskInputView: View {
                     }
                 )
             }
-            .sheet(isPresented: Binding(
+            .navigationDestination(isPresented: Binding(
                 get: { store.showProUpgradePrompt },
                 set: { _ in store.send(.dismissProUpgradePrompt) }
             )) {

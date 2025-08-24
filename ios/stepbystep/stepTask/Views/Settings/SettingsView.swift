@@ -209,30 +209,30 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("設定")
-            .sheet(isPresented: $store.showingSubscription.sending(\.setShowingSubscription)) {
+            .navigationDestination(isPresented: $store.showingSubscription.sending(\.setShowingSubscription)) {
                 SubscriptionView(
                     store: Store(initialState: SubscriptionReducer.State()) {
                         SubscriptionReducer()
                     }
                 )
             }
-            .sheet(isPresented: $store.showingPrivacyPolicy.sending(\.setShowingPrivacyPolicy)) {
+            .navigationDestination(isPresented: $store.showingPrivacyPolicy.sending(\.setShowingPrivacyPolicy)) {
                 WebPolicyView(
                     title: "プライバシーポリシー",
                     urlString: "https://stepbystep-tasks.web.app/privacy.html"
                 )
             }
-            .sheet(isPresented: $store.showingTermsOfService.sending(\.setShowingTermsOfService)) {
+            .navigationDestination(isPresented: $store.showingTermsOfService.sending(\.setShowingTermsOfService)) {
                 WebPolicyView(
                     title: "利用規約",
                     urlString: "https://stepbystep-tasks.web.app/terms.html"
                 )
             }
-            .sheet(isPresented: $store.showingSupport.sending(\.setShowingSupport)) {
+            .navigationDestination(isPresented: $store.showingSupport.sending(\.setShowingSupport)) {
                 SupportView()
             }
             #if DEBUG
-            .sheet(isPresented: $store.showingDebugMenu.sending(\.setShowingDebugMenu)) {
+            .navigationDestination(isPresented: $store.showingDebugMenu.sending(\.setShowingDebugMenu)) {
                 DebugMenuView(
                     store: Store(initialState: DebugMenuReducer.State()) {
                         DebugMenuReducer()

@@ -309,7 +309,7 @@ struct ProStepExecutionView: View {
         } message: {
             Text("すべてのステップが完了しました。\nお疲れさまでした！")
         }
-        .sheet(isPresented: Binding(
+        .navigationDestination(isPresented: Binding(
             get: { store.showProUpgrade },
             set: { _ in store.send(.dismissProUpgrade) }
         )) {
