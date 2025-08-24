@@ -9,17 +9,37 @@ StepByStep (ステップバイステップ) is an iOS task management app that e
 ## Build Commands
 
 ```bash
-# Build the project
-xcodebuild -project ios/stepbystep/stepbystep.xcodeproj -scheme stepbystep -configuration Debug build
+# 利用可能なシミュレーターを確認
+xcrun simctl list devices available | grep -E "iPhone|iPad"
 
-# Run on simulator
-xcodebuild -project ios/stepbystep/stepbystep.xcodeproj -scheme stepbystep -destination 'platform=iOS Simulator,name=iPhone 15' run
+# Build the project (正しいプロジェクト名とスキーム名を使用)
+xcodebuild -project ios/stepbystep/TaskSteps.xcodeproj -scheme stepbystep -configuration Debug build
+
+# Run on simulator (自動検出したiPhoneシミュレーターを使用)
+SIMULATOR=$(xcrun simctl list devices available | grep "iPhone" | head -1 | sed -E 's/.*\(([A-Z0-9-]+)\).*/\1/')
+xcodebuild -project ios/stepbystep/TaskSteps.xcodeproj -scheme stepbystep -destination "platform=iOS Simulator,id=$SIMULATOR" run
 
 # Run tests
-xcodebuild test -project ios/stepbystep/stepbystep.xcodeproj -scheme stepbystep -destination 'platform=iOS Simulator,name=iPhone 15'
+xcodebuild test -project ios/stepbystep/TaskSteps.xcodeproj -scheme stepbystep -destination "platform=iOS Simulator,id=$SIMULATOR"
 
 # Clean build
-xcodebuild clean -project ios/stepbystep/stepbystep.xcodeproj -scheme stepbystep
+xcodebuild clean -project ios/stepbystep/TaskSteps.xcodeproj -scheme stepbystep
+```
+
+## Important: Build Verification
+
+**コード変更後は必ずビルドとテストを実行してください:**
+
+1. **ビルド確認**: 大きな変更を行った後は必ず `xcodebuild` でビルドエラーがないことを確認
+2. **テスト実行**: 機能追加・修正後はテストを実行して既存機能が壊れていないことを確認
+3. **型チェック**: Swift の型チェックエラーが発生した場合は、複雑な式を小さなコンポーネントに分割
+4. **シミュレーター**: 実行前に `xcrun simctl list devices available` で利用可能なシミュレーターを確認
+
+```bash
+# 簡易ビルドチェック（エラーがないか確認、シミュレーター自動検出）
+cd /Users/entaku/repository/stepbystep/ios/stepbystep
+SIMULATOR=$(xcrun simctl list devices available | grep "iPhone" | head -1 | sed -E 's/.*\(([A-Z0-9-]+)\).*/\1/')
+xcodebuild -project TaskSteps.xcodeproj -scheme stepbystep -configuration Debug -sdk iphonesimulator -destination "id=$SIMULATOR" build
 ```
 
 ## Architecture
