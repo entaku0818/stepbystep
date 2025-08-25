@@ -5,8 +5,8 @@ import {splitTaskIntoSteps} from "./taskSplitter";
 // Secret Manager からAPIキーを取得
 const apiKeySecret = defineSecret("STEPBYSTEP_API_KEY");
 
-// フォールバック用のデフォルトキー
-const DEFAULT_API_KEY = "stepbystep-dev-key-2024";
+// フォールバック用のデフォルトキー (一時的にコメントアウト)
+// const DEFAULT_API_KEY = "stepbystep-dev-key-2024";
 
 export const splitTask = functions
   .runWith({
@@ -36,10 +36,14 @@ export const splitTask = functions
         return;
       }
 
-      // API キー認証
-      const validApiKey = apiKeySecret.value() || DEFAULT_API_KEY;
+      // API キー認証 (デバッグ用に一時的にハードコード)
+      const validApiKey = "***REMOVED***";
       const clientApiKey = request.headers["x-api-key"] ||
         request.headers["authorization"];
+
+      console.log("Expected API key:", validApiKey);
+      console.log("Received API key:", clientApiKey);
+      console.log("API keys match:", clientApiKey === validApiKey);
 
       if (!clientApiKey || clientApiKey !== validApiKey) {
         console.log("Invalid or missing API key:", clientApiKey);

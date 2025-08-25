@@ -37,7 +37,10 @@ class LiveTaskSplitterClient: TaskSplitterClient {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(AppConfig.stepByStepApiKey, forHTTPHeaderField: "X-API-Key")
+        
+        let apiKey = AppConfig.stepByStepApiKey
+        print("🔵 [TaskSplitter] Using API Key: \(apiKey)")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         
         let requestBody = TaskSplitRequest(task: task)
         do {
@@ -48,6 +51,8 @@ class LiveTaskSplitterClient: TaskSplitterClient {
             if let bodyString = String(data: request.httpBody!, encoding: .utf8) {
                 print("🔵 [TaskSplitter] Request body: \(bodyString)")
             }
+            
+            print("🔵 [TaskSplitter] Request headers: \(request.allHTTPHeaderFields ?? [:])")
         } catch {
             print("❌ [TaskSplitter] Failed to encode request body: \(error)")
             throw TaskSplitterError.networkError(error)
