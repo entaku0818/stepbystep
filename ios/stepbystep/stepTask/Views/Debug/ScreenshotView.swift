@@ -115,103 +115,63 @@ struct ScreenshotView: View {
 
 struct TaskInputScreenshotView: View {
     var body: some View {
-        VStack(spacing: 0) {
-            // Navigation Bar
-            HStack {
-                Spacer()
-                Text("Task Steps")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.indigo)
+        NavigationStack {
+            VStack(spacing: 24) {
+                // ヘッダーセクション
+                Text("ステップタスクAIでタスクを分割して管理する")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 8)
+                
+                // タスク入力セクション
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("タスク名")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                        
+                        // 残り使用回数を表示
+                        Text("本日の残り: 3回")
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(8)
+                    }
+                    
+                    // TextEditor風の入力欄
+                    Text("部屋を片付ける")
+                        .font(.body)
+                        .foregroundColor(.primary)
+                        .padding(12)
+                        .frame(minHeight: 80, maxHeight: 120)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                        .background(Color(red: 0.95, green: 0.95, blue: 0.97))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                        )
+                }
+                
+                // 保存ボタン
+                Button(action: {}) {
+                    Text("タスクを分割")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                
                 Spacer()
             }
             .padding()
-            .background(Color.white)
-            
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Header
-                    VStack(spacing: 12) {
-                        Text("ステップタスク")
-                            .font(.title)
-                            .fontWeight(.bold)
-                        
-                        Text("AIでタスクを分割して管理する")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.top, 20)
-                    
-                    // Task Input Card
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("新しいタスク")
-                            .font(.headline)
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("タスクを入力")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            Text("部屋を片付ける")
-                                .font(.body)
-                                .padding()
-                                .frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
-                                .background(Color(UIColor.systemGray6))
-                                .cornerRadius(12)
-                        }
-                        
-                        Button(action: {}) {
-                            HStack {
-                                Image(systemName: "sparkles")
-                                Text("AIで5つのステップに分割")
-                            }
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.indigo)
-                            .cornerRadius(12)
-                        }
-                    }
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(16)
-                    .shadow(color: Color.black.opacity(0.05), radius: 10)
-                    
-                    // Usage Limit
-                    HStack {
-                        Image(systemName: "info.circle")
-                            .foregroundColor(.blue)
-                        Text("今日の残り使用回数: 2回")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    Spacer(minLength: 100)
-                }
-                .padding()
-            }
-            .background(Color(UIColor.systemGroupedBackground))
-            
-            // Tab Bar
-            HStack {
-                ForEach(["タスク", "履歴", "設定"], id: \.self) { tab in
-                    Spacer()
-                    VStack(spacing: 4) {
-                        Image(systemName: tab == "タスク" ? "plus.circle.fill" : 
-                              tab == "履歴" ? "clock" : "gearshape")
-                            .font(.title2)
-                        Text(tab)
-                            .font(.caption2)
-                    }
-                    .foregroundColor(tab == "タスク" ? .blue : .gray)
-                    Spacer()
-                }
-            }
-            .padding(.vertical, 8)
-            .background(Color.white)
+            .navigationTitle("新しいタスク")
         }
-    }
 }
 
 // MARK: - Task Splitting Screenshot
@@ -279,113 +239,67 @@ struct TaskSplittingScreenshotView: View {
 
 struct StepExecutionScreenshotView: View {
     var body: some View {
-        VStack(spacing: 0) {
-            // Navigation Bar
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "chevron.left")
-                        .font(.title3)
-                        .foregroundColor(.blue)
-                }
+        NavigationStack {
+            VStack(spacing: 24) {
+                // Task title display
+                Text("部屋を片付ける")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
                 
-                Spacer()
-                
-                Text("ステップ 2/5")
-                    .font(.headline)
-                
-                Spacer()
-                
-                Button("完了") {
+                // Progress indicator
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("進捗: 2/5")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
                     
+                    ProgressView(value: 0.4, total: 1.0)
+                        .tint(.blue)
                 }
-                .foregroundColor(.blue)
-                .fontWeight(.medium)
+                
+                // Current step display
+                VStack(spacing: 16) {
+                    HStack {
+                        Text("ステップ 2")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.blue)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(4)
+                        
+                        Spacer()
+                    }
+                    
+                    Text("不要なものを仕分けして捨てるか、保管する場所を決める")
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding()
+                .background(Color.blue.opacity(0.05))
+                .cornerRadius(12)
+                
+                // Complete button
+                Button(action: {}) {
+                    HStack {
+                        Image(systemName: "checkmark")
+                        Text("完了")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                }
+                
+                Spacer()
             }
             .padding()
-            .background(Color.white)
-            
-            // Content
-            VStack(spacing: 0) {
-                // Progress Bar
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 4)
-                        
-                        Rectangle()
-                            .fill(Color.indigo)
-                            .frame(width: geometry.size.width * 0.4, height: 4)
-                    }
-                }
-                .frame(height: 4)
-                .padding(.horizontal)
-                .padding(.top, 20)
-                
-                Spacer()
-                
-                // Current Step
-                VStack(spacing: 32) {
-                    // Step Number
-                    ZStack {
-                        Circle()
-                            .fill(Color.indigo)
-                            .frame(width: 80, height: 80)
-                        
-                        Text("2")
-                            .font(.system(size: 40, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                    
-                    // Step Content
-                    VStack(spacing: 16) {
-                        Text("本を本棚に戻す")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.center)
-                        
-                        Text("散らばっている本を集めて、本棚の適切な場所に戻しましょう")
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                    }
-                    
-                    // Complete Button
-                    Button(action: {}) {
-                        HStack {
-                            Image(systemName: "checkmark.circle.fill")
-                            Text("このステップを完了")
-                        }
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green)
-                        .cornerRadius(12)
-                    }
-                    .padding(.horizontal, 40)
-                }
-                
-                Spacer()
-                
-                // Navigation Hint
-                HStack {
-                    Text("前のステップ")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                    
-                    Spacer()
-                    
-                    Text("次のステップ")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-                .padding(.horizontal, 40)
-                .padding(.bottom, 40)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(UIColor.systemGroupedBackground))
+            .navigationTitle("ステップ実行")
         }
     }
 }

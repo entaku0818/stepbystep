@@ -36,13 +36,13 @@ export const splitTask = functions
         return;
       }
 
-      // API キー認証 (デバッグ用に一時的にハードコード)
-      const validApiKey = "***REMOVED***";
+      // API キー認証 (Secret Manager から取得)
+      const validApiKey = apiKeySecret.value();
       const clientApiKey = request.headers["x-api-key"] ||
         request.headers["authorization"];
 
-      console.log("Expected API key:", validApiKey);
-      console.log("Received API key:", clientApiKey);
+      console.log("API key validation");
+      console.log("Received API key:", clientApiKey ? "***" : "none");
       console.log("API keys match:", clientApiKey === validApiKey);
 
       if (!clientApiKey || clientApiKey !== validApiKey) {
