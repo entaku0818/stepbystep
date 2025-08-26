@@ -15,14 +15,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		61739A382E10D7B50002A651 /* PBXContainerItemProxy */ = {
+		615824092E5DFB770065B8BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 61739A222E10D7B30002A651 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 61739A292E10D7B30002A651;
-			remoteInfo = stepbystep;
+			remoteInfo = TaskSteps;
 		};
-		61739A422E10D7B50002A651 /* PBXContainerItemProxy */ = {
+		61739A382E10D7B50002A651 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 61739A222E10D7B30002A651 /* Project object */;
 			proxyType = 1;
@@ -32,13 +32,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		615824032E5DFB770065B8BE /* TaskStepsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskStepsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61739A2A2E10D7B30002A651 /* TaskSteps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskSteps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61739A372E10D7B50002A651 /* TaskStepsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskStepsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskStepsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61E139BB2E4897B1007A5AD0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		615824042E5DFB770065B8BE /* TaskStepsUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TaskStepsUITests;
+			sourceTree = "<group>";
+		};
 		61739B272E10EB8A0002A651 /* stepTask */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = stepTask;
@@ -49,14 +54,16 @@
 			path = stepTaskTests;
 			sourceTree = "<group>";
 		};
-		61739B302E10EB920002A651 /* stepTaskUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = stepTaskUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		615824002E5DFB770065B8BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		61739A272E10D7B30002A651 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -76,13 +83,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		61739A3E2E10D7B50002A651 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -91,7 +91,7 @@
 			children = (
 				61739B272E10EB8A0002A651 /* stepTask */,
 				61739B2C2E10EB8E0002A651 /* stepTaskTests */,
-				61739B302E10EB920002A651 /* stepTaskUITests */,
+				615824042E5DFB770065B8BE /* TaskStepsUITests */,
 				61E139BA2E4897B1007A5AD0 /* Frameworks */,
 				61739A2B2E10D7B30002A651 /* Products */,
 			);
@@ -102,7 +102,7 @@
 			children = (
 				61739A2A2E10D7B30002A651 /* TaskSteps.app */,
 				61739A372E10D7B50002A651 /* TaskStepsTests.xctest */,
-				61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */,
+				615824032E5DFB770065B8BE /* TaskStepsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,6 +118,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		615824022E5DFB770065B8BE /* TaskStepsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6158240B2E5DFB770065B8BE /* Build configuration list for PBXNativeTarget "TaskStepsUITests" */;
+			buildPhases = (
+				615823FF2E5DFB770065B8BE /* Sources */,
+				615824002E5DFB770065B8BE /* Frameworks */,
+				615824012E5DFB770065B8BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6158240A2E5DFB770065B8BE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				615824042E5DFB770065B8BE /* TaskStepsUITests */,
+			);
+			name = TaskStepsUITests;
+			packageProductDependencies = (
+			);
+			productName = TaskStepsUITests;
+			productReference = 615824032E5DFB770065B8BE /* TaskStepsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		61739A292E10D7B30002A651 /* TaskSteps */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 61739A4B2E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskSteps" */;
@@ -167,29 +190,6 @@
 			productReference = 61739A372E10D7B50002A651 /* TaskStepsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		61739A402E10D7B50002A651 /* TaskStepsUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 61739A512E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskStepsUITests" */;
-			buildPhases = (
-				61739A3D2E10D7B50002A651 /* Sources */,
-				61739A3E2E10D7B50002A651 /* Frameworks */,
-				61739A3F2E10D7B50002A651 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				61739A432E10D7B50002A651 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				61739B302E10EB920002A651 /* stepTaskUITests */,
-			);
-			name = TaskStepsUITests;
-			packageProductDependencies = (
-			);
-			productName = stepbystepUITests;
-			productReference = 61739A412E10D7B50002A651 /* TaskStepsUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -200,14 +200,14 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					615824022E5DFB770065B8BE = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 61739A292E10D7B30002A651;
+					};
 					61739A292E10D7B30002A651 = {
 						CreatedOnToolsVersion = 16.3;
 					};
 					61739A362E10D7B50002A651 = {
-						CreatedOnToolsVersion = 16.3;
-						TestTargetID = 61739A292E10D7B30002A651;
-					};
-					61739A402E10D7B50002A651 = {
 						CreatedOnToolsVersion = 16.3;
 						TestTargetID = 61739A292E10D7B30002A651;
 					};
@@ -235,12 +235,19 @@
 			targets = (
 				61739A292E10D7B30002A651 /* TaskSteps */,
 				61739A362E10D7B50002A651 /* TaskStepsTests */,
-				61739A402E10D7B50002A651 /* TaskStepsUITests */,
+				615824022E5DFB770065B8BE /* TaskStepsUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		615824012E5DFB770065B8BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		61739A282E10D7B30002A651 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -255,16 +262,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		61739A3F2E10D7B50002A651 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		615823FF2E5DFB770065B8BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
 		61739A262E10D7B30002A651 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -279,29 +286,56 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		61739A3D2E10D7B50002A651 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6158240A2E5DFB770065B8BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 61739A292E10D7B30002A651 /* TaskSteps */;
+			targetProxy = 615824092E5DFB770065B8BE /* PBXContainerItemProxy */;
+		};
 		61739A392E10D7B50002A651 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 61739A292E10D7B30002A651 /* TaskSteps */;
 			targetProxy = 61739A382E10D7B50002A651 /* PBXContainerItemProxy */;
 		};
-		61739A432E10D7B50002A651 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 61739A292E10D7B30002A651 /* TaskSteps */;
-			targetProxy = 61739A422E10D7B50002A651 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		6158240C2E5DFB770065B8BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4YZQY4C47E;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.TaskStepsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TaskSteps;
+			};
+			name = Debug;
+		};
+		6158240D2E5DFB770065B8BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4YZQY4C47E;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.TaskStepsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TaskSteps;
+			};
+			name = Release;
+		};
 		61739A492E10D7B50002A651 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = 61739B272E10EB8A0002A651 /* stepTask */;
@@ -541,43 +575,18 @@
 			};
 			name = Release;
 		};
-		61739A522E10D7B50002A651 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4YZQY4C47E;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.stepbystepUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = stepbystep;
-			};
-			name = Debug;
-		};
-		61739A532E10D7B50002A651 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4YZQY4C47E;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.entaku.stepbystepUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = stepbystep;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6158240B2E5DFB770065B8BE /* Build configuration list for PBXNativeTarget "TaskStepsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6158240C2E5DFB770065B8BE /* Debug */,
+				6158240D2E5DFB770065B8BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		61739A252E10D7B30002A651 /* Build configuration list for PBXProject "TaskSteps" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -601,15 +610,6 @@
 			buildConfigurations = (
 				61739A4F2E10D7B50002A651 /* Debug */,
 				61739A502E10D7B50002A651 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		61739A512E10D7B50002A651 /* Build configuration list for PBXNativeTarget "TaskStepsUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				61739A522E10D7B50002A651 /* Debug */,
-				61739A532E10D7B50002A651 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -187,7 +187,10 @@ struct DebugMenuView: View {
     private var screenshotSection: some View {
         Section("スクリーンショット") {
             Button(action: { store.send(.screenshotModeTapped) }) {
-                Label("スクリーンショットモード", systemImage: "camera")
+                Label("スクリーンショットモード（表示のみ）", systemImage: "camera")
+            }
+            NavigationLink(destination: ScreenshotCaptureView()) {
+                Label("スクリーンショット撮影＆保存", systemImage: "camera.fill")
             }
         }
     }
