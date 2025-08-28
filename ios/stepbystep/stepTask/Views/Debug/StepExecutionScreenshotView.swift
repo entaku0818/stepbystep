@@ -4,8 +4,7 @@ import SwiftUI
 
 struct StepExecutionScreenshotView: View {
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 24) {
+        VStack(spacing: 24) {
                 // Task title display
                 Text("部屋を片付ける")
                     .font(.title2)
@@ -62,9 +61,8 @@ struct StepExecutionScreenshotView: View {
                 }
                 
                 Spacer()
-            }
-            .padding()
-            .navigationTitle("ステップ実行")
         }
+        .padding()
+        .navigationTitle("ステップ実行")
     }
 }

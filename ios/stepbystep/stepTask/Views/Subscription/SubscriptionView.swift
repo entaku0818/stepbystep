@@ -154,8 +154,7 @@ struct SubscriptionView: View {
     let store: StoreOf<SubscriptionReducer>
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
+        ScrollView {
                 VStack(spacing: 24) {
                     // ヘッダー
                     headerSection
@@ -212,7 +211,6 @@ struct SubscriptionView: View {
             } message: {
                 Text("Task Steps Proへようこそ！\n無制限でタスク分割をお楽しみください。")
             }
-        }
     }
     
     // MARK: - Header Section

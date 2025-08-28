@@ -94,9 +94,7 @@ struct DebugMenuView: View {
     @Dependency(\.revenueCatClient) var revenueCatClient
     
     var body: some View {
-        NavigationStack {
-            listContent
-        }
+        listContent
     }
     
     @ViewBuilder

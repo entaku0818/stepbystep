@@ -528,8 +528,7 @@ struct ProUpgradePromptView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 24) {
+        VStack(spacing: 24) {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 60))
                     .foregroundColor(.yellow)
@@ -575,9 +574,8 @@ struct ProUpgradePromptView: View {
                 }
                 .foregroundColor(.gray)
                 .padding(.bottom)
-            }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
     }
 }
 

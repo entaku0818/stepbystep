@@ -4,8 +4,7 @@ import SwiftUI
 
 struct TaskInputScreenshotView: View {
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 24) {
+        VStack(spacing: 24) {
                 // ヘッダーセクション
                 Text("ステップタスクAIでタスクを分割して管理する")
                     .font(.subheadline)
@@ -57,9 +56,8 @@ struct TaskInputScreenshotView: View {
                 }
                 
                 Spacer()
-            }
-            .padding()
-            .navigationTitle("新しいタスク")
         }
+        .padding()
+        .navigationTitle("新しいタスク")
     }
 }
