@@ -376,8 +376,8 @@ struct SubscriptionView: View {
                 .multilineTextAlignment(.leading)
             
             HStack(spacing: 16) {
-                Link("利用規約", destination: URL(string: "https://example.com/terms")!)
-                Link("プライバシーポリシー", destination: URL(string: "https://example.com/privacy")!)
+                Link("利用規約", destination: URL(string: "https://stepbystep-tasks.web.app/terms.html")!)
+                Link("プライバシーポリシー", destination: URL(string: "https://stepbystep-tasks.web.app/privacy.html")!)
             }
             .font(.caption)
         }
