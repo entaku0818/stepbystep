@@ -1,0 +1,82 @@
+{
+  "identifier" : "81FA6F31",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "500",
+      "familyShareable" : false,
+      "internalID" : "6736618258",
+      "localizations" : [
+        {
+          "description" : "無制限のタスク分割、広告なし、優先サポート",
+          "displayName" : "Task Steps Pro",
+          "locale" : "ja"
+        },
+        {
+          "description" : "Unlimited task splitting, ad-free experience, priority support",
+          "displayName" : "Task Steps Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.entaku.stepTask.pro.subscription.monthly",
+      "referenceName" : "Task Steps Pro Monthly",
+      "type" : "AutoRenewable",
+      "subscriptionPeriod" : "P1M"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6447154827",
+    "_developerTeamID" : "4YZQY4C47E",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 759096021.33838701,
+    "_locale" : "ja",
+    "_storefront" : "JPN"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21568098",
+      "localizations" : [
+
+      ],
+      "name" : "Task Steps Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "500",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6736618258",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "無制限のタスク分割、広告なし、優先サポート",
+              "displayName" : "Task Steps Pro",
+              "locale" : "ja"
+            },
+            {
+              "description" : "Unlimited task splitting, ad-free experience, priority support",
+              "displayName" : "Task Steps Pro",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.entaku.stepTask.pro.subscription.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Task Steps Pro Monthly",
+          "subscriptionGroupID" : "21568098",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

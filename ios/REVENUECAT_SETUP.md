@@ -8,7 +8,7 @@
 2. アプリを選択 → 「App内課金」→「作成」をクリック
 3. 以下の情報で自動更新サブスクリプションを作成：
    - **参照名**: Task Steps Pro Monthly
-   - **プロダクトID**: `com.entaku.stepTask.pro.monthly`
+   - **プロダクトID**: `com.entaku.stepTask.pro.subscription.monthly`
    - **サブスクリプショングループ**: Task Steps Pro (新規作成)
    - **期間**: 1ヶ月
    - **価格**: 500円（Tier 3）
@@ -27,7 +27,7 @@
    - RevenueCatにアップロード
 
 4. 製品を設定：
-   - プロダクトID: `com.entaku.stepTask.pro.monthly`
+   - プロダクトID: `com.entaku.stepTask.pro.subscription.monthly`
    - エンタイトルメント: `pro`
 
 5. API キーを取得（後でコードで使用）
@@ -53,7 +53,7 @@
 ```xml
 <key>com.apple.developer.in-app-payments</key>
 <array>
-    <string>com.entaku.stepTask.pro.monthly</string>
+    <string>com.entaku.stepTask.pro.subscription.monthly</string>
 </array>
 ```
 

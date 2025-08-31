@@ -13,7 +13,7 @@ import Dependencies
 // MARK: - Subscription Types
 
 enum SubscriptionType: String, CaseIterable {
-    case monthly = "com.entaku.stepTask.pro.monthly"
+    case monthly = "com.entaku.stepTask.pro.subscription.monthly"
     
     var displayName: String {
         switch self {
