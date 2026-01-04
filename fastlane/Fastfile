@@ -31,8 +31,8 @@ platform :ios do
   lane :upload_metadata do
     # Xcodeプロジェクトからバージョン番号を取得
     version_number = get_version_number(
-      xcodeproj: "VoiLog.xcodeproj",
-      target: "VoiLog"
+      xcodeproj: "../ios/stepbystep/TaskSteps.xcodeproj",
+      target: "stepbystep"
     )
     
     # バージョン番号が取得できなかった場合はエラー

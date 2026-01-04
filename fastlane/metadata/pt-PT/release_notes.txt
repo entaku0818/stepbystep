@@ -1,8 +1,1 @@
 Correções menores de bugs.
-
-Correções de erros e melhorias de estabilidade
-- Corrigido o problema de tom ao usar o microfone dos auscultadores
-- Melhorada a estabilidade da aplicação
-
-Outros:
-- Melhorias menores e correções de erros
