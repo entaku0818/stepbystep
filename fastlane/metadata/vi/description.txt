@@ -1,9 +1,19 @@
-Simple Recorder là ứng dụng dành riêng cho việc ghi âm một cách dễ dàng. Chỉ với một lần chạm, bạn có thể bắt đầu ghi âm, ngay cả khi ứng dụng chạy ở chế độ nền, và dễ dàng chia sẻ nó với các ứng dụng khác, làm cho quá trình ghi âm trở nên đơn giản hơn bao giờ hết.
+One Task Steps là ứng dụng quản lý công việc sử dụng AI để tự động chia công việc thành 5 bước thực hiện, bắt buộc tập trung một công việc.
 
-Tính năng:
+Tính năng chính:
+- Chia công việc bằng AI (sử dụng Gemini API)
+- Bắt buộc một công việc: Chỉ một công việc mỗi lần
+- Thực hiện tuần tự: Không thể bỏ qua bước
+- Chỉ hiển thị bước hiện tại
+- Theo dõi tiến độ và hoạt ảnh hoàn thành
 
-Bắt đầu và dừng ghi âm chỉ với một nút nhấn nhờ thiết kế tối giản.
-Dễ dàng chia sẻ và truy cập các tệp ghi âm của bạn bất cứ lúc nào, ở bất cứ đâu.
-Cung cấp các tệp âm thanh chất lượng cao phù hợp cho các cuộc họp kinh doanh, ghi chú, buổi brainstorming, hoặc bất kỳ khoảnh khắc đáng nhớ nào.
-Giao diện thân thiện với người dùng, dễ dàng sử dụng ngay cả với người mới bắt đầu.
-Với Simple Recorder, bạn sẽ không bao giờ bỏ lỡ những khoảnh khắc quan trọng. Chúng tôi ở đây để giúp bạn ghi lại những khoảnh khắc có ý nghĩa. Tải xuống ngay bây giờ và trải nghiệm sự đơn giản của việc ghi âm.
+Điểm nổi bật:
+- Nhập văn bản đơn giản với phân chia tự động AI
+- Chỉ có thể đăng ký một công việc
+- Giao diện tối giản hỗ trợ tập trung
+- Giới hạn 3 lần sử dụng AI mỗi ngày (phiên bản miễn phí)
+
+Người dùng mục tiêu:
+Hoàn hảo cho người ADHD hoặc khó tập trung.
+
+Thiết kế đơn giản hỗ trợ thực hiện công việc ổn định.

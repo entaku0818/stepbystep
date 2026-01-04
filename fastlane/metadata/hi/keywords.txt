@@ -1,1 +1,1 @@
-Recording,Transcription,Record,Background,Karaoke,Radio,Sleep,Talk,Mic,voice memos,
+task,todo,AI,productivity,focus,ADHD,step,single-task,GTD,organize

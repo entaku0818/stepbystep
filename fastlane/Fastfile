@@ -31,8 +31,8 @@ platform :ios do
   lane :upload_metadata do
     # Xcodeプロジェクトからバージョン番号を取得
     version_number = get_version_number(
-      xcodeproj: "../ios/stepbystep/TaskSteps.xcodeproj",
-      target: "stepbystep"
+      xcodeproj: "ios/stepbystep/TaskSteps.xcodeproj",
+      target: "TaskSteps"
     )
     
     # バージョン番号が取得できなかった場合はエラー
@@ -54,7 +54,6 @@ platform :ios do
       precheck_include_in_app_purchases: false,  # In-app purchasesのチェックをスキップ
       submit_for_review: true,       # 審査提出を実行
       automatic_release: false,      # 審査通過後の自動リリースは無効
-      primary_locale: "en-US",       # プライマリ言語を英語（アメリカ）に設定
       submission_information: {
         add_id_info_uses_idfa: false,  # IDFAの使用なし
         export_compliance_uses_encryption: false,  # 暗号化なし

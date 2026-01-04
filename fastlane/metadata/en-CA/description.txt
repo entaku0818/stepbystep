@@ -1,10 +1,20 @@
-Simple Voice Recorder is an easy-to-use voice recording app that starts with just one tap. Supporting high-quality audio and background recording, it's perfect for various situations from recording meetings to voice memos and capturing ideas.
-Features:
+One Task Steps is a task management app that uses AI to automatically split tasks into 5 actionable steps, enforcing single-task focus.
 
-Start recording with a single tap
-Background recording support
-High-quality audio recording
-Easy sharing of recordings
-Simple and user-friendly design
+Core Features:
+- AI-powered task splitting (using Gemini API)
+- Single-task enforcement: Only one task at a time
+- Sequential execution: Cannot skip steps or multitask
+- Shows only current step to maintain focus
+- Progress tracking and completion animations
 
-From business meetings to daily voice memos, this versatile recording app is ready to help in any situation. Download now and experience hassle-free recording.
+Highlights:
+- Simple text input with AI auto-splitting
+- Only one task can be registered at a time
+- Cannot go back until step is completed
+- Minimal UI to support focus
+- 3 AI uses per day limit (free version)
+
+Target Users:
+Perfect for those with ADHD or focus challenges, and those who struggle with multitasking.
+
+Simple design to support steady task execution.

@@ -1,15 +1,19 @@
-Ecco la traduzione in italiano del testo fornito:
+One Task Steps è un'app di gestione attività che usa l'IA per dividere automaticamente le attività in 5 passaggi eseguibili, imponendo il focus su una singola attività.
 
-Simple Recorder è un'app dedicata alla registrazione senza sforzo. Con un solo tocco, puoi iniziare la tua registrazione, anche in background, e condividerla facilmente con altre app, rendendo il processo di registrazione più semplice che mai.
+Funzionalità principali:
+- Divisione attività con IA (usando Gemini API)
+- Singola attività obbligatoria: Solo un'attività alla volta
+- Esecuzione sequenziale: Non si possono saltare passaggi
+- Mostra solo il passaggio corrente
+- Monitoraggio progressi e animazioni di completamento
 
-Caratteristiche:
+Punti di forza:
+- Input di testo semplice con divisione automatica IA
+- Solo un'attività può essere registrata
+- UI minimale per supportare il focus
+- 3 usi IA al giorno (versione gratuita)
 
-Avvia e interrompi la registrazione con un solo pulsante grazie al design minimalista.
+Utenti target:
+Perfetto per chi ha ADHD o difficoltà di concentrazione.
 
-Condividi e accedi facilmente ai tuoi file di registrazione in qualsiasi momento e ovunque.
-
-Fornisce file audio di alta qualità adatti per riunioni di lavoro, promemoria, sessioni di brainstorming o qualsiasi momento memorabile.
-
-Interfaccia user-friendly facile da navigare anche per i principianti.
-
-Con Simple Recorder, non perderai mai quei momenti essenziali. Siamo qui per aiutarti a custodire i momenti che contano. Scarica ora e sperimenta la semplicità della registrazione.
+Design semplice per esecuzione costante delle attività.

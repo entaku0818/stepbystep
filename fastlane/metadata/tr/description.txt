@@ -1,9 +1,19 @@
-Simple Recorder, kaydetmeyi her zamankinden daha basit hale getiren bir uygulamadır. Tek bir dokunuşla, hatta arka planda bile, kaydınıza başlayabilir ve kolayca diğer uygulamalarla paylaşabilirsiniz.
+One Task Steps, görevleri otomatik olarak 5 uygulanabilir adıma bölen ve tek görev odağını zorunlu kılan, yapay zeka kullanan bir görev yönetimi uygulamasıdır.
 
-Özellikleri:
+Temel Özellikler:
+- Yapay zeka destekli görev bölme (Gemini API kullanarak)
+- Tek görev zorunluluğu: Bir seferde yalnızca bir görev
+- Sıralı yürütme: Adımlar atlanamaz
+- Yalnızca mevcut adımı gösterir
+- İlerleme takibi ve tamamlama animasyonları
 
-Minimalist tasarımı sayesinde kaydınızı tek bir düğmeyle başlatıp durdurabilirsiniz.
-Kayıt dosyalarınıza istediğiniz zaman, istediğiniz yerden kolayca erişin ve paylaşın.
-İş toplantıları, notlar, fikir alışverişi oturumları veya unutulmaz anlar için uygun yüksek kaliteli ses dosyaları sağlar.
-Başlangıç seviyesindeki kullanıcılar için bile kolayca gezinebilecekleri kullanıcı dostu arayüz.
-Simple Recorder ile önemli anları kaçırmayacaksınız. Sizlere önemli anları değerlendirmenizde yardımcı olmaya buradayız. Şimdi indirin ve kaydetmenin basitliğini deneyimleyin.
+Öne Çıkanlar:
+- Basit metin girişi ile AI otomatik bölme
+- Yalnızca bir görev kaydedilebilir
+- Odaklanmayı desteklemek için minimal UI
+- Günde 3 AI kullanımı sınırı (ücretsiz sürüm)
+
+Hedef Kullanıcılar:
+DEHB veya odaklanma zorluğu yaşayanlar için mükemmel.
+
+Kararlı görev yürütme için basit tasarım.

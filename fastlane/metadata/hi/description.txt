@@ -1,9 +1,19 @@
-Simple Recorder is an app dedicated to effortless recording. With just one tap, you can begin your recording, even in the background, and easily share it with other apps, making the recording process simpler than ever.
+One Task Steps एक कार्य प्रबंधन ऐप है जो AI का उपयोग करके कार्यों को स्वचालित रूप से 5 क्रियान्वयन योग्य चरणों में विभाजित करता है, एकल-कार्य फोकस लागू करता है।
 
-Features:
+मुख्य विशेषताएं:
+- AI-संचालित कार्य विभाजन (Gemini API का उपयोग)
+- एकल-कार्य लागू: एक समय में केवल एक कार्य
+- क्रमिक निष्पादन: चरणों को छोड़ नहीं सकते
+- केवल वर्तमान चरण दिखाता है
+- प्रगति ट्रैकिंग और पूर्णता एनिमेशन
 
-Start and stop your recording with a single button thanks to its minimalist design.
-Easily share and access your recording files anytime, anywhere.
-Provides high-quality audio files suitable for business meetings, memos, brainstorming sessions, or any memorable moments.
-User-friendly interface that's easy for beginners to navigate.
-With Simple Recorder, you'll never miss those essential moments. We're here to help you cherish moments that matter. Download now and experience the simplicity of recording.
+विशेषताएं:
+- सरल टेक्स्ट इनपुट के साथ AI ऑटो-स्प्लिटिंग
+- केवल एक कार्य पंजीकृत हो सकता है
+- न्यूनतम UI फोकस का समर्थन करने के लिए
+- प्रति दिन 3 AI उपयोग सीमा (मुफ्त संस्करण)
+
+लक्षित उपयोगकर्ता:
+ADHD या फोकस चुनौतियों वाले लोगों के लिए उपयुक्त।
+
+स्थिर कार्य निष्पादन के लिए सरल डिजाइन।
