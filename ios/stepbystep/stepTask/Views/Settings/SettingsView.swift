@@ -63,8 +63,7 @@ struct SettingsReducer {
                 
             case .reviewTapped:
                 return .run { _ in
-                    // TODO: Replace with actual App Store ID
-                    let appStoreURL = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID?action=write-review")!
+                    let appStoreURL = URL(string: "https://apps.apple.com/app/id6748559225?action=write-review")!
                     await openURL(appStoreURL)
                 }
                 
