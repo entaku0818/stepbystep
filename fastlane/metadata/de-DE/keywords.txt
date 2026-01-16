@@ -1,1 +1,1 @@
-Aufnahme,Transkription,Aufzeichnen,Hintergrund,Karaoke,Radio,Schlafen,Reden,microphone,Konvertierung
+Aufgabe,TODO,KI,Produktivität,Fokus,ADHS,Schritt,Single-Task,GTD,organisieren

@@ -1,1 +1,1 @@
-Gravação,Transcrição,Gravar,Fundo,Karaokê,Rádio,Dormir,Falar,Microfone,Conversão,Captura,Extração
+tarefa,TODO,IA,produtividade,foco,TDAH,passo,single-task,GTD,organizar
