@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ios/**'
+      - '.swiftlint.yml'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    paths:
+      - 'ios/**'
+      - '.swiftlint.yml'
+      - '.github/workflows/ci.yml'
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: ubuntu-latest
+    container: ghcr.io/realm/swiftlint:0.57.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run SwiftLint
+        run: swiftlint lint --reporter github-actions-logging
+
+  build-and-test:
+    name: Build & Unit Tests
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      # Debug/Release.xcconfig と GoogleService-Info.plist はgitignoreされているため、
+      # CIではビルドが通るダミーを生成する（実際のキーはビルド検証には不要）
+      - name: Create xcconfig from examples
+        run: |
+          cp ios/stepbystep/stepTask/Config/Debug.xcconfig.example ios/stepbystep/stepTask/Config/Debug.xcconfig
+          cp ios/stepbystep/stepTask/Config/Release.xcconfig.example ios/stepbystep/stepTask/Config/Release.xcconfig
+
+      - name: Create dummy GoogleService-Info.plist
+        run: |
+          cat > ios/stepbystep/stepTask/GoogleService-Info.plist <<'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>API_KEY</key>
+            <string>AIzaSyDUMMYDUMMYDUMMYDUMMYDUMMYDUMMYDUM</string>
+            <key>GCM_SENDER_ID</key>
+            <string>123456789012</string>
+            <key>PLIST_VERSION</key>
+            <string>1</string>
+            <key>BUNDLE_ID</key>
+            <string>com.entaku.stepTask</string>
+            <key>PROJECT_ID</key>
+            <string>stepbystep-tasks</string>
+            <key>STORAGE_BUCKET</key>
+            <string>stepbystep-tasks.appspot.com</string>
+            <key>IS_ADS_ENABLED</key>
+            <false/>
+            <key>IS_ANALYTICS_ENABLED</key>
+            <false/>
+            <key>IS_APPINVITE_ENABLED</key>
+            <false/>
+            <key>IS_GCM_ENABLED</key>
+            <true/>
+            <key>IS_SIGNIN_ENABLED</key>
+            <false/>
+            <key>GOOGLE_APP_ID</key>
+            <string>1:123456789012:ios:abcdef0123456789abcdef</string>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Select simulator
+        id: sim
+        run: |
+          SIMULATOR=$(xcrun simctl list devices available | grep "iPhone" | head -1 | sed -E 's/.*\(([A-Z0-9-]+)\).*/\1/')
+          echo "Selected simulator: $SIMULATOR"
+          echo "id=$SIMULATOR" >> "$GITHUB_OUTPUT"
+
+      - name: Build and run unit tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project ios/stepbystep/TaskSteps.xcodeproj \
+            -scheme stepbystep \
+            -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.id }}" \
+            -only-testing:TaskStepsTests \
+            CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions

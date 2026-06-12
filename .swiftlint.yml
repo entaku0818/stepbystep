@@ -1,0 +1,26 @@
+# SwiftLint configuration for TaskSteps (StepByStep) iOS app
+# CI gate: error-level violations fail the build; warnings are informational.
+
+included:
+  - ios/stepbystep/stepTask
+  - ios/stepbystep/stepTaskTests
+  - ios/stepbystep/stepTaskUITests
+  - ios/stepbystep/TaskStepsUITests
+
+excluded:
+  - ios/stepbystep/.build
+  - build
+
+# 既存コードの命名（小文字始まりの型名・短い変数名）は変更しない方針のため除外
+type_name:
+  excluded:
+    - stepbystepApp
+    - stepbystepUITests
+    - stepbystepUITestsLaunchTests
+
+identifier_name:
+  excluded:
+    - i
+    - id
+    - x
+    - y
