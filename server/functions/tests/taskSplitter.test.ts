@@ -28,12 +28,11 @@ describe('TaskSplitter', () => {
       ]);
     });
     
-    it('should handle short tasks', async () => {
+    it('should reject tasks shorter than 5 characters', async () => {
       const task = '買い物';
-      const steps = await splitTaskIntoSteps(task);
-      
-      expect(steps).toHaveLength(5);
-      expect(steps[0]).toContain('買い物');
+
+      await expect(splitTaskIntoSteps(task))
+        .rejects.toThrow('タスクは5文字以上で入力してください');
     });
     
     it('should complete within reasonable time', async () => {
