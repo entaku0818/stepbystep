@@ -88,4 +88,5 @@ jobs:
             -scheme stepbystep \
             -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.id }}" \
             -only-testing:TaskStepsTests \
+            -skipMacroValidation \
             CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
