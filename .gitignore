@@ -107,3 +107,9 @@ google-services.json
 # Xcode configuration files with sensitive data
 ios/stepbystep/stepTask/Config/Debug.xcconfig
 ios/stepbystep/stepTask/Config/Release.xcconfig
+# 署名関連（秘密鍵を含む。リポジトリに置かない）
+*.p12
+*.cer
+*.certSigningRequest
+*.mobileprovision
+firebase-debug.log
