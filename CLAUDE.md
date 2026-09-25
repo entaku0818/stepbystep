@@ -39,8 +39,11 @@ xcodebuild clean -project ios/stepbystep/TaskSteps.xcodeproj -scheme stepbystep
 # 簡易ビルドチェック（エラーがないか確認、シミュレーター自動検出）
 cd /Users/entaku/repository/stepbystep/ios/stepbystep
 SIMULATOR=$(xcrun simctl list devices available | grep "iPhone" | head -1 | sed -E 's/.*\(([A-Z0-9-]+)\).*/\1/')
-xcodebuild -project TaskSteps.xcodeproj -scheme stepbystep -configuration Debug -sdk iphonesimulator -destination "id=$SIMULATOR" build
+xcodebuild -project TaskSteps.xcodeproj -scheme stepbystep -configuration Debug -destination "id=$SIMULATOR" -skipMacroValidation build
 ```
+
+- `-sdk iphonesimulator` は付けない（TCA のマクロが macOS ではなくシミュレーター向けにビルドされ、`produced malformed response` で失敗する）
+- Xcode 27（`/Applications/Xcode-27.0.0.app`）でビルド・テスト確認済み。`xcode-select` を切り替えずに使う場合はコマンドの頭に `DEVELOPER_DIR=/Applications/Xcode-27.0.0.app/Contents/Developer` を付ける（iOS 27 シミュレーターを使用）。Xcode 26.5 でもビルド可
 
 ## Architecture
 
