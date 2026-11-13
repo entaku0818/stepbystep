@@ -26,6 +26,27 @@ platform :ios do
     )
   end
 
+  # ビルドしてTestFlightにアップロード
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    build_app(
+      project: "ios/stepbystep/TaskSteps.xcodeproj",
+      scheme: "stepbystep",
+      export_method: "app-store",
+      output_directory: "ios/stepbystep/build",
+      output_name: "TaskSteps.ipa",
+      export_options: {
+        provisioningProfiles: {
+          "com.entaku.stepTask" => "com.entaku.stepTask AppStore"
+        }
+      }
+    )
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
   # メタデータとスクリーンショットのアップロード、審査提出
   desc "Upload metadata and screenshots to App Store Connect and submit for review"
   lane :upload_metadata do
